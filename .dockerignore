@@ -1,0 +1,17 @@
+.git
+**/node_modules
+**/dist
+**/.next
+**/.env*
+**/.secrets
+**/*.log
+**/*.tsbuildinfo
+**/coverage
+**/out
+**/cache
+.vercel
+.claude
+.codex
+.agents
+packages/foundry/lib
+packages/foundry/broadcast

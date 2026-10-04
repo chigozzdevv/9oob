@@ -27,8 +27,8 @@ transfer, swap and bridge through one guided conversation.
 | Bridge                   | Test USDC → Base             | Test USDC → Hedera                  |
 | Combined swap and bridge | Hedera asset → Base USDC     | Base USDC → Hedera asset            |
 
-Swaps default to the connected wallet as recipient. Explicit recipients are
-preserved; transfers and bridges ask for one when missing. MetaMask supports all
+Swaps and bridges default to the connected wallet as recipient. Explicit recipients are
+preserved; transfers ask for one when missing. MetaMask supports all
 four actions across both networks. Native Hedera signing remains available for
 Hedera transfers.
 
@@ -210,4 +210,26 @@ start a temporary MongoDB process and may download its binary on first use.
 Automated tests never sign or broadcast real transactions.
 
 After building, run `yarn server:serve` and `yarn client:serve` in separate terminals.
+
+## Hosting
+
+Deploy the Next.js app on Vercel with **Root Directory** set to `packages/nextjs`
+and source files outside that directory included. The bundled Vercel configuration
+builds the shared workspaces first. Set `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`,
+`NOOB_SERVER_URL` and the server-only `NOOB_SERVER_API_KEY` in Vercel.
+
+Run the execution API on a persistent server. [`deploy/compose.yaml`](deploy/compose.yaml)
+includes the backend and authenticated MongoDB with a persistent volume. Copy
+[`deploy/.env.example`](deploy/.env.example) to `deploy/.env`, configure the keys,
+database passwords and public demo origin, then run:
+
+```sh
+docker compose -f deploy/compose.yaml up -d --build --wait
+```
+
+Route your HTTPS reverse proxy to `9oob-backend:3001` on the `9oob-edge` Docker network.
+Use the same `NOOB_SERVER_API_KEY` on Vercel and the backend; it is never exposed to
+the browser. The API starts its settlement worker automatically. Keep its database
+volume when updating containers so pending executions can resume.
+
 9oob uses the [MIT license](LICENSE).

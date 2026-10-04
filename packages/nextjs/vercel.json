@@ -1,3 +1,5 @@
 {
-  "installCommand": "yarn install"
+  "installCommand": "yarn install --immutable",
+  "buildCommand": "cd ../.. && yarn next:build",
+  "framework": "nextjs"
 }

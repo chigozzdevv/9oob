@@ -1,0 +1,100 @@
+{
+  "purpose": "acquire-hedera-test-USDC",
+  "chainId": 296,
+  "address": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+  "action": {
+    "kind": "swap",
+    "sourceNetwork": "hedera",
+    "destinationNetwork": "hedera",
+    "sourceAsset": "HBAR",
+    "destinationAsset": "USDC",
+    "amount": "5",
+    "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+  },
+  "review": {
+    "title": "Swap 5 HBAR for USDC",
+    "facts": [
+      "To: 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+      "Hedera testnet",
+      "Minimum received: 11.159846 USDC",
+      "Slippage: 0.5%"
+    ],
+    "quote": {
+      "amountRaw": "11215926",
+      "amountDecimals": 6,
+      "amountSymbol": "USDC"
+    }
+  },
+  "before": {
+    "HBARRaw": "20000000000000000000",
+    "USDCRaw": "0"
+  },
+  "status": "completed",
+  "steps": [
+    {
+      "phase": "association",
+      "label": "Enable USDC",
+      "hash": "0x1299038af9d2b2d2ca52d9a5092c275101a8d62eb66e57b07e10ebf5a2da50ac",
+      "nonce": 0,
+      "transaction": {
+        "from": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "to": "0x0000000000000000000000000000000000001549",
+        "data": "0x0a754de6",
+        "value": "0"
+      },
+      "context": {
+        "provider": "saucerswap",
+        "sourceChainKey": "hedera",
+        "destinationToken": "0x0000000000000000000000000000000000001549",
+        "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "minimum": "11159846",
+        "outputDecimals": 6
+      },
+      "gasLimit": "939557",
+      "gasPrice": "880000000000",
+      "status": "confirmed",
+      "submittedAt": "2026-10-03T11:10:48.042Z",
+      "receipt": {
+        "transactionHash": "0x1299038af9d2b2d2ca52d9a5092c275101a8d62eb66e57b07e10ebf5a2da50ac",
+        "blockNumber": "0x2763800",
+        "status": "0x1"
+      }
+    },
+    {
+      "phase": "source",
+      "label": "Confirm swap",
+      "hash": "0x185a975b4cb266fefae5d76dee958acefc3a0e87106120c16e68cc60ccb3f2f1",
+      "nonce": 1,
+      "transaction": {
+        "from": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "to": "0x0000000000000000000000000000000000004b40",
+        "data": "0x7ff36ab50000000000000000000000000000000000000000000000000000000000aa4926000000000000000000000000000000000000000000000000000000000000008000000000000000000000000003020e0d37dedb86a08b59f71e7095aa93c78ef1000000000000000000000000000000000000000000000000000000006ac0e3f000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000003ad20000000000000000000000000000000000000000000000000000000000001549",
+        "value": "5000000000000000000"
+      },
+      "context": {
+        "provider": "saucerswap",
+        "sourceChainKey": "hedera",
+        "destinationToken": "0x0000000000000000000000000000000000001549",
+        "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "minimum": "11159846",
+        "outputDecimals": 6
+      },
+      "gasLimit": "181464",
+      "gasPrice": "880000000000",
+      "status": "confirmed",
+      "submittedAt": "2026-10-03T11:11:02.821Z",
+      "receipt": {
+        "transactionHash": "0x185a975b4cb266fefae5d76dee958acefc3a0e87106120c16e68cc60ccb3f2f1",
+        "blockNumber": "0x2763807",
+        "status": "0x1"
+      }
+    }
+  ],
+  "createdAt": "2026-10-03T11:10:41.060Z",
+  "updatedAt": "2026-10-03T11:11:11.796Z",
+  "receivedUSDCRaw": "11215926",
+  "after": {
+    "HBARRaw": "14266489320000000000",
+    "USDCRaw": "11215926"
+  }
+}

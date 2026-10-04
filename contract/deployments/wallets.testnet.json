@@ -1,0 +1,13 @@
+{
+  "purpose": "testnet-deployment",
+  "hedera": {
+    "network": "Hedera Testnet",
+    "chainId": 296,
+    "address": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+  },
+  "base": {
+    "network": "Base Sepolia",
+    "chainId": 84532,
+    "address": "0xF463bcD8249a32eBE6a16FEb87052CCecC159237"
+  }
+}

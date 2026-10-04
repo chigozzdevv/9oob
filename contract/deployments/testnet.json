@@ -1,0 +1,24 @@
+{
+  "status": "configured-and-funded",
+  "hedera": {
+    "chainId": 296,
+    "endpointId": 40285,
+    "tokenId": "0.0.5449",
+    "bridgeAddress": "0x827fab4b1f0059896f76a2db5e5a0f4cc4553b4a",
+    "deploymentTxHash": "0x66ac299c4c919ce2e63cd932864cbc3588ec06e5f8503ec3d1f92b8c26f58136",
+    "configured": true,
+    "initialFundingUSDC": "10",
+    "funded": true
+  },
+  "base": {
+    "chainId": 84532,
+    "endpointId": 40245,
+    "tokenAddress": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+    "bridgeAddress": "0x27ce1d17ad320417f7aaf15f3e4d6dff5c13d642",
+    "deploymentTxHash": "0x73147b9c93b39b60c5afa8ddba7605c875967285efe4c64a1be70339ff576545",
+    "configured": true,
+    "initialFundingUSDC": "10",
+    "funded": true
+  },
+  "updatedAt": "2026-10-03T11:40:51.924Z"
+}

@@ -1,0 +1,23 @@
+{
+  "observedAt": "2026-10-03T12:29:09.164Z",
+  "hedera": {
+    "accountId": "0.0.10840734",
+    "address": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+    "HBAR": "2.25700715",
+    "USDC": "1.430104"
+  },
+  "base": {
+    "address": "0xF463bcD8249a32eBE6a16FEb87052CCecC159237",
+    "ETH": "0.002483451124587296",
+    "USDC": "9.5"
+  },
+  "sharedBase": {
+    "address": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+    "ETH": "0.000246823055997778",
+    "USDC": "0.624177"
+  },
+  "poolAvailableUSDC": {
+    "hedera": "10.134177",
+    "base": "9.875823"
+  }
+}

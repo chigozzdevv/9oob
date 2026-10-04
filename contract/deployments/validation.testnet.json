@@ -1,0 +1,922 @@
+{
+  "network": "Hedera Testnet and Base Sepolia",
+  "runs": {
+    "transfer-base-eth": {
+      "intent": "Send 0.0005 ETH on Base Sepolia to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+      "id": "557e1520-ffd4-4729-8f11-8e9a4556bb69",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "duplicateRegistration": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [
+        {
+          "hash": "0x823666ffc2a5ed30df24d1bd9c561c883bd5cec9dba40ae6137db0ecb1fddba7",
+          "version": 3,
+          "kind": "source",
+          "network": "base"
+        }
+      ],
+      "execution": {
+        "id": "557e1520-ffd4-4729-8f11-8e9a4556bb69",
+        "intent": "Send 0.0005 ETH on Base Sepolia to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "accountId": "0xF463bcD8249a32eBE6a16FEb87052CCecC159237",
+        "evmAddress": "0xF463bcD8249a32eBE6a16FEb87052CCecC159237",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "transfer",
+            "network": "base",
+            "asset": "ETH",
+            "amount": "0.0005",
+            "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+          },
+          "message": "Ready to send 0.0005 ETH on Base Sepolia to the specified address.",
+          "review": {
+            "title": "Send 0.0005 ETH",
+            "facts": [
+              "To: 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+              "From: 0xF463bcD8249a32eBE6a16FEb87052CCecC159237",
+              "Base Sepolia"
+            ],
+            "quote": null
+          }
+        },
+        "sourceTxHash": "0x823666ffc2a5ed30df24d1bd9c561c883bd5cec9dba40ae6137db0ecb1fddba7",
+        "destinationTxHash": null,
+        "error": null,
+        "stage": "transfer",
+        "stageNetwork": "base",
+        "stageAction": null,
+        "completedSteps": [
+          {
+            "stage": "transfer",
+            "network": "base",
+            "txHash": "0x823666ffc2a5ed30df24d1bd9c561c883bd5cec9dba40ae6137db0ecb1fddba7"
+          }
+        ],
+        "version": 5,
+        "createdAt": "2026-10-03T11:53:38.859Z",
+        "updatedAt": "2026-10-03T11:55:12.800Z"
+      },
+      "finishedAt": "2026-10-03T12:06:10.258Z"
+    },
+    "transfer-base-usdc": {
+      "intent": "Send 0.5 USDC on Base Sepolia to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+      "id": "9289c322-56e4-4935-903e-e2a8d308fc48",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "duplicateRegistration": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [
+        {
+          "hash": "0x25749f249527ca377dac6e89726ff4d016d7c6dd6ae9d9743ff17967b48dfcf1",
+          "version": 3,
+          "kind": "source",
+          "network": "base"
+        }
+      ],
+      "execution": {
+        "id": "9289c322-56e4-4935-903e-e2a8d308fc48",
+        "intent": "Send 0.5 USDC on Base Sepolia to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "accountId": "0xF463bcD8249a32eBE6a16FEb87052CCecC159237",
+        "evmAddress": "0xF463bcD8249a32eBE6a16FEb87052CCecC159237",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "transfer",
+            "network": "base",
+            "asset": "USDC",
+            "amount": "0.5",
+            "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+          },
+          "message": "Ready to send 0.5 USDC on Base Sepolia.",
+          "review": {
+            "title": "Send 0.5 USDC",
+            "facts": [
+              "To: 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+              "From: 0xF463bcD8249a32eBE6a16FEb87052CCecC159237",
+              "Base Sepolia"
+            ],
+            "quote": null
+          }
+        },
+        "sourceTxHash": "0x25749f249527ca377dac6e89726ff4d016d7c6dd6ae9d9743ff17967b48dfcf1",
+        "destinationTxHash": null,
+        "error": null,
+        "stage": "transfer",
+        "stageNetwork": "base",
+        "stageAction": null,
+        "completedSteps": [
+          {
+            "stage": "transfer",
+            "network": "base",
+            "txHash": "0x25749f249527ca377dac6e89726ff4d016d7c6dd6ae9d9743ff17967b48dfcf1"
+          }
+        ],
+        "version": 5,
+        "createdAt": "2026-10-03T11:57:11.193Z",
+        "updatedAt": "2026-10-03T11:57:23.704Z"
+      },
+      "finishedAt": "2026-10-03T12:06:11.277Z"
+    },
+    "bridge-hedera-base": {
+      "intent": "Bridge 1 USDC from Hedera Testnet to Base Sepolia and send the USDC to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+      "id": "1943a6ff-018d-40e8-b263-b1fa74626f1c",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "duplicateRegistration": true,
+        "terminalPreparationBlocked": true,
+        "serverRestartRecovery": true,
+        "sourceJournalEntriesAfterRestart": 1
+      },
+      "transactions": [
+        {
+          "hash": "0x7be83966df37432979cca44ba623805a6c029a5621c0b073197d641cdb683a15",
+          "version": 3,
+          "kind": "approval",
+          "network": "hedera"
+        },
+        {
+          "hash": "0x0d065f06bd664a64d3aabff5b17ea476fb73e43bc18e95f4493e55b6cf2a4c17",
+          "version": 6,
+          "kind": "source",
+          "network": "hedera"
+        }
+      ],
+      "execution": {
+        "id": "1943a6ff-018d-40e8-b263-b1fa74626f1c",
+        "intent": "Bridge 1 USDC from Hedera Testnet to Base Sepolia and send the USDC to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "accountId": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "evmAddress": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "bridge",
+            "sourceNetwork": "hedera",
+            "destinationNetwork": "base",
+            "sourceAsset": "USDC",
+            "destinationAsset": "USDC",
+            "amount": "1",
+            "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+          },
+          "message": "Ready to bridge 1 USDC from Hedera Testnet to Base Sepolia.",
+          "review": {
+            "title": "Bridge 1 USDC to USDC",
+            "facts": [
+              "To: 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+              "Network fee: 2.37711953 HBAR maximum",
+              "Source token: 0.0.5449",
+              "Destination token: 0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+              "Testnet pool payout"
+            ],
+            "quote": {
+              "amountRaw": "1000000",
+              "amountDecimals": 6,
+              "amountSymbol": "USDC"
+            }
+          }
+        },
+        "sourceTxHash": "0x0d065f06bd664a64d3aabff5b17ea476fb73e43bc18e95f4493e55b6cf2a4c17",
+        "destinationTxHash": "0x2a4644461c2e3ce2235a07cc8cbedd0939eb3c2ebe608dbce52be5aa02928101",
+        "error": null,
+        "stage": "bridge",
+        "stageNetwork": "hedera",
+        "stageAction": {
+          "kind": "bridge",
+          "sourceNetwork": "hedera",
+          "destinationNetwork": "base",
+          "sourceAsset": "USDC",
+          "destinationAsset": "USDC",
+          "amount": "1",
+          "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+        },
+        "completedSteps": [
+          {
+            "stage": "approval",
+            "network": "hedera",
+            "txHash": "0x7be83966df37432979cca44ba623805a6c029a5621c0b073197d641cdb683a15"
+          },
+          {
+            "stage": "bridge",
+            "network": "hedera",
+            "txHash": "0x0d065f06bd664a64d3aabff5b17ea476fb73e43bc18e95f4493e55b6cf2a4c17",
+            "amountRaw": "1000000"
+          }
+        ],
+        "version": 20,
+        "createdAt": "2026-10-03T12:06:17.070Z",
+        "updatedAt": "2026-10-03T12:08:19.854Z"
+      },
+      "finishedAt": "2026-10-03T12:08:20.093Z"
+    },
+    "bridge-base-hedera": {
+      "intent": "Bridge 1 USDC from Base Sepolia to Hedera Testnet and send the USDC to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+      "id": "076e2df9-a2dd-4b2e-8cb1-dc7dee1bf1e4",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "duplicateRegistration": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [
+        {
+          "hash": "0xe57cb94c05ee249cbc4cbcd152fcf473ddb959aa29ad7a1c79a80f4cd0c0eb72",
+          "version": 3,
+          "kind": "approval",
+          "network": "base"
+        },
+        {
+          "hash": "0xff294a6555d25baae3b2adaad6432987abf7d2c4a03a4e15552f48f97ba73856",
+          "version": 6,
+          "kind": "source",
+          "network": "base"
+        }
+      ],
+      "execution": {
+        "id": "076e2df9-a2dd-4b2e-8cb1-dc7dee1bf1e4",
+        "intent": "Bridge 1 USDC from Base Sepolia to Hedera Testnet and send the USDC to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "accountId": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "evmAddress": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "bridge",
+            "sourceNetwork": "base",
+            "destinationNetwork": "hedera",
+            "sourceAsset": "USDC",
+            "destinationAsset": "USDC",
+            "amount": "1",
+            "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+          },
+          "message": "",
+          "review": {
+            "title": "Bridge 1 USDC to USDC",
+            "facts": [
+              "To: 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+              "Network fee: 0.000137244837707689 ETH maximum",
+              "Source token: 0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+              "Destination token: 0.0.5449",
+              "Testnet pool payout"
+            ],
+            "quote": {
+              "amountRaw": "1000000",
+              "amountDecimals": 6,
+              "amountSymbol": "USDC"
+            }
+          }
+        },
+        "sourceTxHash": "0xff294a6555d25baae3b2adaad6432987abf7d2c4a03a4e15552f48f97ba73856",
+        "destinationTxHash": "0xb4bf0f4982d1af17cf14feac4367848979f6fd15871cd1cc91c2a5d945da9003",
+        "error": null,
+        "stage": "bridge",
+        "stageNetwork": "base",
+        "stageAction": {
+          "kind": "bridge",
+          "sourceNetwork": "base",
+          "destinationNetwork": "hedera",
+          "sourceAsset": "USDC",
+          "destinationAsset": "USDC",
+          "amount": "1",
+          "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+        },
+        "completedSteps": [
+          {
+            "stage": "approval",
+            "network": "base",
+            "txHash": "0xe57cb94c05ee249cbc4cbcd152fcf473ddb959aa29ad7a1c79a80f4cd0c0eb72"
+          },
+          {
+            "stage": "bridge",
+            "network": "base",
+            "txHash": "0xff294a6555d25baae3b2adaad6432987abf7d2c4a03a4e15552f48f97ba73856",
+            "amountRaw": "1000000"
+          }
+        ],
+        "version": 26,
+        "createdAt": "2026-10-03T12:08:24.258Z",
+        "updatedAt": "2026-10-03T12:10:29.551Z"
+      },
+      "finishedAt": "2026-10-03T12:10:29.707Z"
+    },
+    "swap-hedera": {
+      "intent": "Swap 0.1 HBAR for USDC on Hedera Testnet and send the output to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+      "id": "685c3d6e-5090-4700-b6bd-f95a45fb0ff4",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "duplicateRegistration": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [
+        {
+          "hash": "0x9d3ce788b5bfdc01d9bcee550acc5262e9cbc698830294a6887918886b225e5c",
+          "version": 3,
+          "kind": "source",
+          "network": "hedera"
+        }
+      ],
+      "execution": {
+        "id": "685c3d6e-5090-4700-b6bd-f95a45fb0ff4",
+        "intent": "Swap 0.1 HBAR for USDC on Hedera Testnet and send the output to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "accountId": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "evmAddress": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "swap",
+            "sourceNetwork": "hedera",
+            "destinationNetwork": "hedera",
+            "sourceAsset": "HBAR",
+            "destinationAsset": "USDC",
+            "amount": "0.1",
+            "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+          },
+          "message": "Ready to review the Hedera testnet swap.",
+          "review": {
+            "title": "Swap 0.1 HBAR for USDC",
+            "facts": [
+              "To: 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+              "Hedera testnet",
+              "Minimum received: 0.223057 USDC",
+              "Slippage: 0.5%"
+            ],
+            "quote": {
+              "amountRaw": "224178",
+              "amountDecimals": 6,
+              "amountSymbol": "USDC"
+            }
+          }
+        },
+        "sourceTxHash": "0x9d3ce788b5bfdc01d9bcee550acc5262e9cbc698830294a6887918886b225e5c",
+        "destinationTxHash": null,
+        "error": null,
+        "stage": "swap",
+        "stageNetwork": "hedera",
+        "stageAction": {
+          "kind": "swap",
+          "sourceNetwork": "hedera",
+          "destinationNetwork": "hedera",
+          "sourceAsset": "HBAR",
+          "destinationAsset": "USDC",
+          "amount": "0.1",
+          "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+        },
+        "completedSteps": [
+          {
+            "stage": "swap",
+            "network": "hedera",
+            "txHash": "0x9d3ce788b5bfdc01d9bcee550acc5262e9cbc698830294a6887918886b225e5c"
+          }
+        ],
+        "version": 5,
+        "createdAt": "2026-10-03T12:10:34.241Z",
+        "updatedAt": "2026-10-03T12:10:59.243Z"
+      },
+      "finishedAt": "2026-10-03T12:10:59.267Z"
+    },
+    "swap-hedera-base": {
+      "intent": "Swap 0.1 HBAR on Hedera Testnet into USDC on Base Sepolia and send the final output to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+      "id": "c0745780-ba15-43d7-b4e7-a72fc916a9eb",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "duplicateRegistration": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [
+        {
+          "hash": "0x268b8c1d995a0499317a7c16d228359c97a28852faf722b583a1e26cf622b45c",
+          "version": 3,
+          "kind": "source",
+          "network": "hedera"
+        },
+        {
+          "hash": "0x0bfa24953cab112d75d51f62dfac996a505406af77d40564aae1b5d546ce73b5",
+          "version": 7,
+          "kind": "approval",
+          "network": "hedera"
+        },
+        {
+          "hash": "0x7adccda9340286a82b681be44c2f5da3df20085de3e0835c0c58301932948c65",
+          "version": 10,
+          "kind": "source",
+          "network": "hedera"
+        }
+      ],
+      "execution": {
+        "id": "c0745780-ba15-43d7-b4e7-a72fc916a9eb",
+        "intent": "Swap 0.1 HBAR on Hedera Testnet into USDC on Base Sepolia and send the final output to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "accountId": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "evmAddress": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "swap",
+            "sourceNetwork": "hedera",
+            "destinationNetwork": "base",
+            "sourceAsset": "HBAR",
+            "destinationAsset": "USDC",
+            "amount": "0.1",
+            "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+          },
+          "message": "Swap 0.1 HBAR on Hedera Testnet for USDC on Base Sepolia and send it to the specified recipient.",
+          "review": {
+            "title": "Bridge 0.224177 USDC to USDC",
+            "facts": [
+              "To: 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+              "Network fee: 2.37711953 HBAR maximum",
+              "Source token: 0.0.5449",
+              "Destination token: 0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+              "Testnet pool payout"
+            ],
+            "quote": {
+              "amountRaw": "224177",
+              "amountDecimals": 6,
+              "amountSymbol": "USDC"
+            }
+          }
+        },
+        "sourceTxHash": "0x7adccda9340286a82b681be44c2f5da3df20085de3e0835c0c58301932948c65",
+        "destinationTxHash": "0x0523d33505b7630f8651a16084c5c4af4badb44ac2ce6b4ec01a7fff32488513",
+        "error": null,
+        "stage": "bridge",
+        "stageNetwork": "hedera",
+        "stageAction": {
+          "kind": "bridge",
+          "sourceNetwork": "hedera",
+          "destinationNetwork": "base",
+          "sourceAsset": "USDC",
+          "destinationAsset": "USDC",
+          "amount": "0.224177",
+          "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+        },
+        "completedSteps": [
+          {
+            "stage": "swap",
+            "network": "hedera",
+            "txHash": "0x268b8c1d995a0499317a7c16d228359c97a28852faf722b583a1e26cf622b45c",
+            "amountRaw": "224177"
+          },
+          {
+            "stage": "approval",
+            "network": "hedera",
+            "txHash": "0x0bfa24953cab112d75d51f62dfac996a505406af77d40564aae1b5d546ce73b5"
+          },
+          {
+            "stage": "bridge",
+            "network": "hedera",
+            "txHash": "0x7adccda9340286a82b681be44c2f5da3df20085de3e0835c0c58301932948c65",
+            "amountRaw": "224177"
+          }
+        ],
+        "version": 29,
+        "createdAt": "2026-10-03T12:11:05.016Z",
+        "updatedAt": "2026-10-03T12:13:43.435Z"
+      },
+      "finishedAt": "2026-10-03T12:13:43.452Z"
+    },
+    "swap-base-hedera": {
+      "intent": "Swap 0.1 USDC on Base Sepolia into HBAR on Hedera Testnet and send the final output to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+      "id": "2d5f89df-d0f2-481f-a82f-ec8eff4a06bf",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "duplicateRegistration": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [
+        {
+          "hash": "0xb51e4057a11d466fd5ff1a2bdbeff9371233c131d1579b8dd920491410673f7f",
+          "version": 3,
+          "kind": "approval",
+          "network": "base"
+        },
+        {
+          "hash": "0x14665642160faa3d5d6d9d752520cc50c1477c99a4849cab7c8bc7247de86c03",
+          "version": 6,
+          "kind": "source",
+          "network": "base"
+        },
+        {
+          "hash": "0x8ca564bcdc770ae403f8a9f49586cc95f481011acc2ac792e6960a7fe9500235",
+          "version": 26,
+          "kind": "approval",
+          "network": "hedera"
+        },
+        {
+          "hash": "0x2b107812350686fd00ddd125165c20a6b08e3eca6949a34e274af88d4297c2be",
+          "version": 29,
+          "kind": "source",
+          "network": "hedera"
+        }
+      ],
+      "execution": {
+        "id": "2d5f89df-d0f2-481f-a82f-ec8eff4a06bf",
+        "intent": "Swap 0.1 USDC on Base Sepolia into HBAR on Hedera Testnet and send the final output to 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "accountId": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "evmAddress": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "swap",
+            "sourceNetwork": "base",
+            "destinationNetwork": "hedera",
+            "sourceAsset": "USDC",
+            "destinationAsset": "HBAR",
+            "amount": "0.1",
+            "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+          },
+          "message": "Ready to swap 0.1 USDC on Base Sepolia into HBAR on Hedera Testnet and send it to the specified recipient.",
+          "review": {
+            "title": "Swap 0.1 USDC for HBAR",
+            "facts": [
+              "To: 0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+              "Hedera testnet",
+              "Minimum received: 0.04411849 HBAR",
+              "Slippage: 0.5%"
+            ],
+            "quote": {
+              "amountRaw": "4434020",
+              "amountDecimals": 8,
+              "amountSymbol": "HBAR"
+            }
+          }
+        },
+        "sourceTxHash": "0x2b107812350686fd00ddd125165c20a6b08e3eca6949a34e274af88d4297c2be",
+        "destinationTxHash": "0x5c401899fdc098e7c113b434a30330ae5fabdab4f57739be6d2b2a6c60a2bb0c",
+        "error": null,
+        "stage": "swap",
+        "stageNetwork": "hedera",
+        "stageAction": {
+          "kind": "swap",
+          "sourceNetwork": "hedera",
+          "destinationNetwork": "hedera",
+          "sourceAsset": "USDC",
+          "destinationAsset": "HBAR",
+          "amount": "0.1",
+          "recipient": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1"
+        },
+        "completedSteps": [
+          {
+            "stage": "approval",
+            "network": "base",
+            "txHash": "0xb51e4057a11d466fd5ff1a2bdbeff9371233c131d1579b8dd920491410673f7f"
+          },
+          {
+            "stage": "bridge",
+            "network": "base",
+            "txHash": "0x14665642160faa3d5d6d9d752520cc50c1477c99a4849cab7c8bc7247de86c03",
+            "amountRaw": "100000"
+          },
+          {
+            "stage": "approval",
+            "network": "hedera",
+            "txHash": "0x8ca564bcdc770ae403f8a9f49586cc95f481011acc2ac792e6960a7fe9500235"
+          },
+          {
+            "stage": "swap",
+            "network": "hedera",
+            "txHash": "0x2b107812350686fd00ddd125165c20a6b08e3eca6949a34e274af88d4297c2be"
+          }
+        ],
+        "version": 31,
+        "createdAt": "2026-10-03T12:13:48.091Z",
+        "updatedAt": "2026-10-03T12:16:33.696Z"
+      },
+      "finishedAt": "2026-10-03T12:16:33.716Z"
+    },
+    "transfer-hbar": {
+      "intent": "Send 0.01 HBAR on Hedera Testnet to 0.0.10841324",
+      "id": "60e578f7-7891-4371-a3cf-c1d07d770c25",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "duplicateRegistration": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [
+        {
+          "hash": "0.0.10840734@1791030290.091360024",
+          "version": 3,
+          "kind": "hedera-transfer",
+          "network": "hedera"
+        }
+      ],
+      "execution": {
+        "id": "60e578f7-7891-4371-a3cf-c1d07d770c25",
+        "intent": "Send 0.01 HBAR on Hedera Testnet to 0.0.10841324",
+        "accountId": "0.0.10840734",
+        "evmAddress": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "transfer",
+            "network": "hedera",
+            "asset": "HBAR",
+            "amount": "0.01",
+            "recipient": "0.0.10841324"
+          },
+          "message": "Ready to send 0.01 HBAR on Hedera Testnet to 0.0.10841324.",
+          "review": {
+            "title": "Send 0.01 HBAR",
+            "facts": ["To: 0.0.10841324", "From: 0.0.10840734", "Hedera testnet"],
+            "quote": null
+          }
+        },
+        "sourceTxHash": "0.0.10840734@1791030290.091360024",
+        "destinationTxHash": null,
+        "error": null,
+        "stage": "transfer",
+        "stageNetwork": "hedera",
+        "stageAction": null,
+        "completedSteps": [
+          {
+            "stage": "transfer",
+            "network": "hedera",
+            "txHash": "0.0.10840734@1791030290.091360024"
+          }
+        ],
+        "version": 5,
+        "createdAt": "2026-10-03T12:16:37.948Z",
+        "updatedAt": "2026-10-03T12:25:02.424Z"
+      },
+      "rejectedAttempts": [
+        {
+          "transactionId": "0.0.10840734@1791029927.938473929",
+          "reason": "INSUFFICIENT_TX_FEE",
+          "accepted": false,
+          "mirrorStatus": 404
+        }
+      ],
+      "finishedAt": "2026-10-03T12:25:02.669Z"
+    },
+    "transfer-hedera-usdc": {
+      "intent": "Send 0.01 USDC on Hedera Testnet to 0.0.10841324",
+      "id": "d7367638-f066-45c2-9311-9e5cf83e87db",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "duplicateRegistration": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [
+        {
+          "hash": "0.0.10840734@1791030311.333253913",
+          "version": 3,
+          "kind": "hedera-transfer",
+          "network": "hedera"
+        }
+      ],
+      "execution": {
+        "id": "d7367638-f066-45c2-9311-9e5cf83e87db",
+        "intent": "Send 0.01 USDC on Hedera Testnet to 0.0.10841324",
+        "accountId": "0.0.10840734",
+        "evmAddress": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "transfer",
+            "network": "hedera",
+            "asset": "USDC",
+            "amount": "0.01",
+            "recipient": "0.0.10841324"
+          },
+          "message": "Ready to send 0.01 USDC on Hedera Testnet to 0.0.10841324.",
+          "review": {
+            "title": "Send 0.01 USDC",
+            "facts": ["To: 0.0.10841324", "From: 0.0.10840734", "Hedera testnet"],
+            "quote": null
+          }
+        },
+        "sourceTxHash": "0.0.10840734@1791030311.333253913",
+        "destinationTxHash": null,
+        "error": null,
+        "stage": "transfer",
+        "stageNetwork": "hedera",
+        "stageAction": null,
+        "completedSteps": [
+          {
+            "stage": "transfer",
+            "network": "hedera",
+            "txHash": "0.0.10840734@1791030311.333253913"
+          }
+        ],
+        "version": 5,
+        "createdAt": "2026-10-03T12:25:11.659Z",
+        "updatedAt": "2026-10-03T12:25:20.629Z"
+      },
+      "finishedAt": "2026-10-03T12:25:20.644Z"
+    },
+    "balance-hbar": {
+      "intent": "Check my HBAR balance on Hedera Testnet",
+      "id": "ec0c153f-022c-4bc6-9f0b-0964194a8fa8",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [],
+      "execution": {
+        "id": "ec0c153f-022c-4bc6-9f0b-0964194a8fa8",
+        "intent": "Check my HBAR balance on Hedera Testnet",
+        "accountId": "0.0.10840734",
+        "evmAddress": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "balance",
+            "network": "hedera",
+            "asset": "HBAR"
+          },
+          "message": "Check your HBAR balance on Hedera Testnet.",
+          "review": {
+            "title": "2.25700715 HBAR",
+            "facts": ["Account: 0.0.10840734", "Hedera testnet"],
+            "quote": null
+          }
+        },
+        "sourceTxHash": null,
+        "destinationTxHash": null,
+        "error": null,
+        "version": 2,
+        "createdAt": "2026-10-03T12:25:29.019Z",
+        "updatedAt": "2026-10-03T12:25:29.749Z"
+      },
+      "finishedAt": "2026-10-03T12:25:29.775Z"
+    },
+    "balance-hedera-usdc": {
+      "intent": "Check my USDC balance on Hedera Testnet",
+      "id": "0e01b934-a3f4-49b8-997c-46c4565e4ebc",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [],
+      "execution": {
+        "id": "0e01b934-a3f4-49b8-997c-46c4565e4ebc",
+        "intent": "Check my USDC balance on Hedera Testnet",
+        "accountId": "0.0.10840734",
+        "evmAddress": "0x03020E0D37DEDb86A08B59f71E7095aA93c78EF1",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "balance",
+            "network": "hedera",
+            "asset": "USDC"
+          },
+          "message": "Check your USDC balance on Hedera Testnet.",
+          "review": {
+            "title": "1.430104 USDC",
+            "facts": ["Account: 0.0.10840734", "Hedera testnet"],
+            "quote": null
+          }
+        },
+        "sourceTxHash": null,
+        "destinationTxHash": null,
+        "error": null,
+        "version": 2,
+        "createdAt": "2026-10-03T12:25:33.267Z",
+        "updatedAt": "2026-10-03T12:25:34.958Z"
+      },
+      "finishedAt": "2026-10-03T12:25:34.984Z"
+    },
+    "balance-base-eth": {
+      "intent": "Check my ETH balance on Base Sepolia",
+      "id": "9514aade-2c8e-457a-a2c4-bfb5abd67f4b",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [],
+      "execution": {
+        "id": "9514aade-2c8e-457a-a2c4-bfb5abd67f4b",
+        "intent": "Check my ETH balance on Base Sepolia",
+        "accountId": "0xF463bcD8249a32eBE6a16FEb87052CCecC159237",
+        "evmAddress": "0xF463bcD8249a32eBE6a16FEb87052CCecC159237",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "balance",
+            "network": "base",
+            "asset": "ETH"
+          },
+          "message": "Check your ETH balance on Base Sepolia.",
+          "review": {
+            "title": "0.002483451124587296 ETH",
+            "facts": ["Account: 0xF463bcD8249a32eBE6a16FEb87052CCecC159237", "Base Sepolia"],
+            "quote": null
+          }
+        },
+        "sourceTxHash": null,
+        "destinationTxHash": null,
+        "error": null,
+        "version": 2,
+        "createdAt": "2026-10-03T12:25:38.422Z",
+        "updatedAt": "2026-10-03T12:25:40.814Z"
+      },
+      "finishedAt": "2026-10-03T12:25:40.834Z"
+    },
+    "balance-base-usdc": {
+      "intent": "Check my USDC balance on Base Sepolia",
+      "id": "56f2eaa7-569a-4b43-9344-615e8db4cecf",
+      "status": "completed",
+      "checks": {
+        "deferredWallet": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [],
+      "execution": {
+        "id": "56f2eaa7-569a-4b43-9344-615e8db4cecf",
+        "intent": "Check my USDC balance on Base Sepolia",
+        "accountId": "0xF463bcD8249a32eBE6a16FEb87052CCecC159237",
+        "evmAddress": "0xF463bcD8249a32eBE6a16FEb87052CCecC159237",
+        "status": "completed",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "balance",
+            "network": "base",
+            "asset": "USDC"
+          },
+          "message": "Check your USDC balance on Base Sepolia.",
+          "review": {
+            "title": "9.5 USDC",
+            "facts": ["Account: 0xF463bcD8249a32eBE6a16FEb87052CCecC159237", "Base Sepolia"],
+            "quote": null
+          }
+        },
+        "sourceTxHash": null,
+        "destinationTxHash": null,
+        "error": null,
+        "version": 2,
+        "createdAt": "2026-10-03T12:25:45.112Z",
+        "updatedAt": "2026-10-03T12:25:46.457Z"
+      },
+      "finishedAt": "2026-10-03T12:25:46.476Z"
+    },
+    "cancel": {
+      "intent": "Check my HBAR balance on Hedera Testnet",
+      "id": "9e70119b-8fa7-46e9-a60d-44efb46937ef",
+      "status": "cancelled",
+      "checks": {
+        "deferredWallet": true,
+        "terminalPreparationBlocked": true
+      },
+      "transactions": [],
+      "execution": {
+        "id": "9e70119b-8fa7-46e9-a60d-44efb46937ef",
+        "intent": "Check my HBAR balance on Hedera Testnet",
+        "accountId": null,
+        "evmAddress": null,
+        "status": "cancelled",
+        "interpretation": {
+          "outcome": "ready",
+          "action": {
+            "kind": "balance",
+            "network": "hedera",
+            "asset": "HBAR"
+          },
+          "message": "I’ll check your HBAR balance on Hedera Testnet.",
+          "review": null
+        },
+        "sourceTxHash": null,
+        "destinationTxHash": null,
+        "error": null,
+        "version": 1,
+        "createdAt": "2026-10-03T12:25:49.629Z",
+        "updatedAt": "2026-10-03T12:25:49.703Z"
+      },
+      "finishedAt": "2026-10-03T12:25:49.723Z"
+    }
+  },
+  "completedAt": "2026-10-03T12:30:23.048Z",
+  "summary": {
+    "liveCases": 14,
+    "completed": 13,
+    "cancelledAsExpected": 1,
+    "appTestsPassed": 86,
+    "optionalReadOnlyTestSkipped": 1,
+    "contractTestsPassed": 14,
+    "contractFuzzRuns": 256,
+    "browserExtensionPairingVerified": false
+  }
+}

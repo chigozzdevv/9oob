@@ -6,7 +6,7 @@ import { getMetadata } from "~~/services/metadata";
 export const metadata = getMetadata({
   title: "9oob",
   description:
-    "Tell 9oob what you want to do. Review it, sign with your wallet, and track it to completion.",
+    "Embed natural language onchain actions in your Hedera app. Balance, swap, bridge and transfer through one guided conversation.",
 });
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {

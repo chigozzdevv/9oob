@@ -10,7 +10,13 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./styles.css": "./src/modal/modal.css"
+    "./styles.css": "./src/modal/modal.css",
+    "./wordmark": {
+      "source": "./src/modal/wordmark.tsx",
+      "types": "./src/modal/wordmark.tsx",
+      "import": "./dist/modal/wordmark.js",
+      "default": "./dist/modal/wordmark.js"
+    }
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

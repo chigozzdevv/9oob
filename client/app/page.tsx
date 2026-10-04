@@ -1,5 +1,5 @@
-import { IntentInput } from "~~/components/intent-input";
+import { Landing } from "~~/components/landing";
 
 export default function HomePage() {
-  return <IntentInput />;
+  return <Landing />;
 }

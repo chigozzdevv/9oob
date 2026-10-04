@@ -1,0 +1,37 @@
+{
+  "name": "@9oob/schema",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./src/index.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./intent": {
+      "source": "./src/intent.ts",
+      "types": "./src/intent.ts",
+      "import": "./dist/intent.js",
+      "default": "./dist/intent.js"
+    },
+    "./execution": {
+      "source": "./src/execution.ts",
+      "types": "./src/execution.ts",
+      "import": "./dist/execution.js",
+      "default": "./dist/execution.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.50",
+    "typescript": "^5.8.2"
+  }
+}

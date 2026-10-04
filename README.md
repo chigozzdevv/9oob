@@ -49,11 +49,15 @@ were not part of it.
 Requires Node.js **22.12+** and Yarn **3.2.3**. Install Foundry for contract builds
 and `yarn check`; Docker Desktop is needed only for the local MongoDB option.
 
-### 1. Install
+### 1. Create your app
 
 ```sh
-git clone https://github.com/chigozzdevv/9oob.git
-cd 9oob
+npm create scaffold-hbar@latest -- --template chigozzdevv/9oob
+```
+
+Choose your project name and Yarn, then enter the generated folder and run:
+
+```sh
 yarn setup
 ```
 

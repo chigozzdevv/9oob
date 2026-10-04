@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 import test from "node:test";
-import { buildHederaTransfer } from "../../../packages/sdk/src/wallet/hedera.js";
+import { buildHederaTransfer } from "../../../packages/sdk/src/wallet/hedera-transfer.js";
 
 test("the native runner serializes its fee cap across SDK module formats without signing", () => {
   const require = createRequire(new URL("../../../packages/sdk/package.json", import.meta.url));

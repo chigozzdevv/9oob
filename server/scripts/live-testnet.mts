@@ -14,7 +14,7 @@ import {
   send,
   safeError,
 } from "./testnet-chain.mjs";
-import { buildHederaTransfer } from "../../packages/sdk/src/wallet/hedera.js";
+import { buildHederaTransfer } from "../../packages/sdk/src/wallet/hedera-transfer.js";
 import { HederaProvider } from "../src/shared/integration/hedera/hedera.client.js";
 import { parseTokenAmount } from "../src/shared/integration/amounts.js";
 

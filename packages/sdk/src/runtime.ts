@@ -236,7 +236,12 @@ export function useNoobRuntime(wallet: NoobWallet, endpoint = "/api/noob") {
           update({ busy: false }, run.key);
           return;
         }
-        const send = walletSender(step, walletRef.current);
+        const send = await walletSender(step, walletRef.current);
+        if (activeRef.current?.key !== run.key) return;
+        if (walletGuide(execution, walletRef.current, step)?.state !== "ready") {
+          update({ busy: false }, run.key);
+          return;
+        }
         const pendingSubmission: PendingSubmission = {
           preparationVersion: execution.version,
           network,

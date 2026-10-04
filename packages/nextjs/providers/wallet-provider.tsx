@@ -1,36 +1,17 @@
 "use client";
 
-import { NoobProvider, normalizeNativeAddress, type NoobWallet } from "@9oob/sdk";
+import { normalizeNativeAddress, type NoobWallet } from "@9oob/sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, useAccount, useWalletClient } from "wagmi";
 import { useAppKitAccount, useAppKitProvider } from "@reown/appkit/react";
 import { hederaNamespace, type HederaProvider } from "@hashgraph/hedera-wallet-connect";
-import { useEffect } from "react";
-import { Header } from "~~/components/header";
+import { memo, useEffect, useMemo } from "react";
 import { sendNativeTransaction } from "~~/providers/wallet/native-signer";
 import { initAppKit } from "~~/providers/wallet/appkit";
 import { wagmiConfig } from "~~/providers/wallet/wagmi";
 import walletConfig from "~~/providers/wallet/config";
 import { synchronizeEvmNetwork } from "~~/providers/wallet/evm-network";
-
-const AppShell = ({
-  children,
-  wallet,
-  connectorId,
-}: {
-  children: React.ReactNode;
-  wallet: NoobWallet;
-  connectorId?: string;
-}) => {
-  return (
-    <>
-      <div className="app-shell flex flex-col min-h-screen" data-wallet-connector={connectorId}>
-        <Header address={wallet.accountId} manageWallet={() => void wallet.connect()} />
-        <main className="relative flex flex-col flex-1">{children}</main>
-      </div>
-    </>
-  );
-};
+import type { WalletProviderProps } from "~~/providers/wallet/loader";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,17 +21,17 @@ export const queryClient = new QueryClient({
   },
 });
 
-export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
+export const WalletProvider = memo(function WalletProvider({ onChange }: WalletProviderProps) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <NoobWalletProvider>{children}</NoobWalletProvider>
+        <WalletConnection onChange={onChange} />
       </QueryClientProvider>
     </WagmiProvider>
   );
-};
+});
 
-function NoobWalletProvider({ children }: { children: React.ReactNode }) {
+function WalletConnection({ onChange }: WalletProviderProps) {
   const native = useAppKitAccount({ namespace: hederaNamespace });
   const { walletProvider: provider } = useAppKitProvider<HederaProvider>(hederaNamespace);
   const evm = useAccount();
@@ -105,40 +86,52 @@ function NoobWalletProvider({ children }: { children: React.ReactNode }) {
     client.account.address.toLowerCase() === evm.address?.toLowerCase() &&
     client.chain.id === evm.chainId;
   const supportedChain = walletConfig.targetNetworks.some(network => network.id === evm.chainId);
-  const wallet: NoobWallet = {
-    accountId: evm.isConnected ? (evm.address ?? null) : accountId,
-    nativeAccountId: accountId,
-    evmAddress: evm.isConnected ? (evm.address ?? null) : null,
-    chainId: evm.isConnected ? evm.chainId : undefined,
-    isConnecting:
-      evm.status === "connecting" ||
-      evm.status === "reconnecting" ||
-      (evm.isConnected && supportedChain && (isPending || Boolean(client && !clientMatches))),
-    connect: async requirement => {
-      const kit = await initAppKit();
-      const namespace = requirement?.kind === "native" ? hederaNamespace : "eip155";
-      return kit.open({ view: requirement ? "Connect" : undefined, namespace });
-    },
-    nativeSend: transaction => sendNativeTransaction(provider ?? null, accountId, transaction),
-    evmClient: clientMatches
-      ? { chain: client.chain, sendTransaction: transaction => client.sendTransaction(transaction) }
-      : undefined,
-    switchChain: async chainId => {
-      const network = walletConfig.targetNetworks.find(network => network.id === chainId);
-      if (!network) throw new Error("This testnet network is not supported");
-      if (!evm.connector) throw new Error("Connect your wallet before switching networks");
-      if ((await synchronizeEvmNetwork(evm.connector, evm.chainId)) === chainId) return;
-      const kit = await initAppKit();
-      await kit.switchNetwork(network, { throwOnFailure: true });
-      if ((await synchronizeEvmNetwork(evm.connector, evm.chainId)) !== chainId)
-        throw new Error(`The wallet has not switched to ${network.name}. Check your wallet and try again.`);
-    },
-  };
-  return (
-    <NoobProvider wallet={wallet}>
-      <AppShell wallet={wallet} connectorId={evm.connector?.id}>
-        {children}
-      </AppShell>
-    </NoobProvider>
+  const wallet = useMemo<NoobWallet>(
+    () => ({
+      accountId: evm.isConnected ? (evm.address ?? null) : accountId,
+      nativeAccountId: accountId,
+      evmAddress: evm.isConnected ? (evm.address ?? null) : null,
+      chainId: evm.isConnected ? evm.chainId : undefined,
+      isConnecting:
+        evm.status === "connecting" ||
+        evm.status === "reconnecting" ||
+        (evm.isConnected && supportedChain && (isPending || Boolean(client && !clientMatches))),
+      connect: async requirement => {
+        const kit = await initAppKit();
+        const namespace = requirement?.kind === "native" ? hederaNamespace : "eip155";
+        return kit.open({ view: requirement ? "Connect" : undefined, namespace });
+      },
+      nativeSend: transaction => sendNativeTransaction(provider ?? null, accountId, transaction),
+      evmClient: clientMatches
+        ? { chain: client.chain, sendTransaction: transaction => client.sendTransaction(transaction) }
+        : undefined,
+      switchChain: async chainId => {
+        const network = walletConfig.targetNetworks.find(network => network.id === chainId);
+        if (!network) throw new Error("This testnet network is not supported");
+        if (!evm.connector) throw new Error("Connect your wallet before switching networks");
+        if ((await synchronizeEvmNetwork(evm.connector, evm.chainId)) === chainId) return;
+        const kit = await initAppKit();
+        await kit.switchNetwork(network, { throwOnFailure: true });
+        if ((await synchronizeEvmNetwork(evm.connector, evm.chainId)) !== chainId)
+          throw new Error(`The wallet has not switched to ${network.name}. Check your wallet and try again.`);
+      },
+    }),
+    [
+      evm.isConnected,
+      evm.address,
+      evm.chainId,
+      evm.status,
+      evm.connector,
+      accountId,
+      supportedChain,
+      isPending,
+      client,
+      clientMatches,
+      provider,
+    ],
   );
+  useEffect(() => {
+    onChange({ wallet, connectorId: evm.connector?.id });
+  }, [wallet, evm.connector?.id, onChange]);
+  return null;
 }

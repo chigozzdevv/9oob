@@ -1,6 +1,5 @@
 import type { Transaction } from "@hiero-ledger/sdk";
 import type { WalletRequirement } from "@9oob/schema";
-import { buildHederaTransfer } from "./hedera.js";
 import { evmSender } from "./evm.js";
 
 export type NoobWallet = {
@@ -18,12 +17,13 @@ export type NoobWallet = {
   switchChain: (chainId: number) => Promise<unknown>;
 };
 
-export function walletSender(step: Record<string, unknown>, wallet: NoobWallet): () => Promise<string> {
+export async function walletSender(step: Record<string, unknown>, wallet: NoobWallet): Promise<() => Promise<string>> {
   if (step.kind !== "hedera-transfer") return evmSender(step, wallet);
   const accountId = wallet.nativeAccountId ?? wallet.accountId;
   if (!accountId || !/^0\.0\.\d+$/.test(accountId)) throw new Error("Connect a Hedera wallet to sign this transfer");
   if (accountId !== String(step.accountId))
     throw new Error("Your Hedera account changed. Review the intent again before signing");
+  const { buildHederaTransfer } = await import("./hedera-transfer.js");
   const transaction = buildHederaTransfer(step);
   return async () => {
     const response = await wallet.nativeSend(transaction);

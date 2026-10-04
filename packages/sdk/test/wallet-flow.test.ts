@@ -454,7 +454,7 @@ test("one EVM wallet is reused for balances, transfers, swaps and bridges withou
   }
 });
 
-test("an existing native review still uses its bound Hedera account when MetaMask is also connected", () => {
+test("an existing native review still uses its bound Hedera account when MetaMask is also connected", async () => {
   const execution: Execution = {
     ...initial,
     accountId: "0.0.1",
@@ -492,8 +492,8 @@ test("an existing native review still uses its bound Hedera account when MetaMas
     network: "testnet",
   };
   assert.equal(walletGuide(execution, wallet, step)?.state, "ready");
-  assert.equal(typeof walletSender(step, wallet), "function");
-  assert.throws(() => walletSender(step, { ...wallet, nativeAccountId: "0.0.9" }), /account changed/);
+  assert.equal(typeof (await walletSender(step, wallet)), "function");
+  await assert.rejects(walletSender(step, { ...wallet, nativeAccountId: "0.0.9" }), /account changed/);
 });
 
 test("a connected MetaMask on an unconfigured network is guided to switch without another connection", () => {

@@ -895,7 +895,7 @@
             "network": "hedera",
             "asset": "HBAR"
           },
-          "message": "I’ll check your HBAR balance on Hedera Testnet.",
+          "message": "I\u2019ll check your HBAR balance on Hedera Testnet.",
           "review": null
         },
         "sourceTxHash": null,
@@ -916,7 +916,6 @@
     "appTestsPassed": 86,
     "optionalReadOnlyTestSkipped": 1,
     "contractTestsPassed": 14,
-    "contractFuzzRuns": 256,
-    "browserExtensionPairingVerified": false
+    "contractFuzzRuns": 256
   }
 }

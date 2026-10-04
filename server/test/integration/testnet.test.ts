@@ -177,6 +177,34 @@ test("a deteriorated quote or wrong router factory cannot reach a wallet step", 
   await assert.rejects(provider.review(swap), /factory/);
 });
 
+test("independent swap checks run together but quoting waits for token and deployment validation", async () => {
+  const rpc = new FixtureRpc("hedera");
+  const reads: string[] = [];
+  const read = rpc.read.bind(rpc);
+  rpc.read = async (...args) => {
+    reads.push(args[2]);
+    return read(...args);
+  };
+  let finish!: (token: { type: string; custom_fees: Record<string, unknown> }) => void;
+  const provider = new SaucerSwapProvider(rpc, {
+    token: () =>
+      new Promise(resolve => {
+        finish = resolve;
+      }),
+  } as unknown as HederaProvider);
+  const review = provider.review(swap);
+  assert.deepEqual(reads, ["factory", "decimals", "getPair"]);
+  assert(!reads.includes("getAmountsOut"));
+  finish({ type: "FUNGIBLE_COMMON", custom_fees: {} });
+  await review;
+  assert.equal(reads.at(-1), "getAmountsOut");
+  const invalid = provider.review(swap);
+  finish({ type: "NON_FUNGIBLE_UNIQUE", custom_fees: {} });
+  await assert.rejects(invalid, /active fungible token/);
+  assert.equal(reads.filter(name => name === "getAmountsOut").length, 1);
+  assert.equal(rpc.simulated.length, 0);
+});
+
 test("association and exact token allowance are separate steps before swapping", async () => {
   const rpc = new FixtureRpc("hedera"),
     provider = new SaucerSwapProvider(rpc, metadata);

@@ -33,8 +33,8 @@ export class SaucerSwapProvider {
     const whbar = tokenAddress("hedera", TESTNET_TOKENS.hederaWhbar);
     const source = nativeIn ? whbar : tokenAddress("hedera", action.sourceAsset);
     const destination = nativeOut ? whbar : tokenAddress("hedera", action.destinationAsset);
-    for (const asset of [action.sourceAsset, action.destinationAsset]) {
-      if (asset.toUpperCase() === "HBAR") continue;
+    if (source.toLowerCase() === destination.toLowerCase()) throw new Error("Choose different assets for a swap");
+    const validateToken = async (asset: string) => {
       const metadata = await this.hedera.token(hederaTokenId(asset));
       if (
         metadata.type !== "FUNGIBLE_COMMON" ||
@@ -43,16 +43,19 @@ export class SaucerSwapProvider {
         Object.values(metadata.custom_fees ?? {}).some(fees => Array.isArray(fees) && fees.length > 0)
       )
         throw new Error("This testnet swap requires an active fungible token without custom transfer fees");
-    }
-    if (source.toLowerCase() === destination.toLowerCase()) throw new Error("Choose different assets for a swap");
-    await this.rpc.assertContract(SAUCER_ROUTER);
-    if (
-      (await this.rpc.read<Address>(SAUCER_ROUTER, saucerAbi, "factory")).toLowerCase() !== SAUCER_FACTORY.toLowerCase()
-    )
+    };
+    const [factory, sourceDecimals, destinationDecimals, pair] = await Promise.all([
+      this.rpc.read<Address>(SAUCER_ROUTER, saucerAbi, "factory"),
+      nativeIn ? Promise.resolve(8) : this.rpc.read<number>(source, tokenAbi, "decimals").then(Number),
+      nativeOut ? Promise.resolve(8) : this.rpc.read<number>(destination, tokenAbi, "decimals").then(Number),
+      this.rpc.read<Address>(SAUCER_FACTORY, factoryAbi, "getPair", [source, destination]),
+      this.rpc.assertContract(SAUCER_ROUTER),
+      ...[action.sourceAsset, action.destinationAsset]
+        .filter(asset => asset.toUpperCase() !== "HBAR")
+        .map(validateToken),
+    ]);
+    if (factory.toLowerCase() !== SAUCER_FACTORY.toLowerCase())
       throw new Error("SaucerSwap router factory does not match the testnet deployment");
-    const sourceDecimals = nativeIn ? 8 : Number(await this.rpc.read<number>(source, tokenAbi, "decimals"));
-    const destinationDecimals = nativeOut ? 8 : Number(await this.rpc.read<number>(destination, tokenAbi, "decimals"));
-    const pair = await this.rpc.read<Address>(SAUCER_FACTORY, factoryAbi, "getPair", [source, destination]);
     const path = BigInt(pair) !== 0n ? [source, destination] : [source, whbar, destination];
     if (new Set(path.map(value => value.toLowerCase())).size !== path.length)
       throw new Error("No liquid testnet swap route exists for these assets");

@@ -1,0 +1,17 @@
+{
+  "name": "@9oob/contract",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test"
+  },
+  "dependencies": {
+    "@layerzerolabs/lz-evm-messagelib-v2": "3.0.148",
+    "@layerzerolabs/lz-evm-protocol-v2": "3.0.148",
+    "@layerzerolabs/lz-evm-v1-0.7": "3.0.148",
+    "@layerzerolabs/oapp-evm": "0.4.1",
+    "@openzeppelin/contracts": "5.0.2",
+    "@openzeppelin/contracts-upgradeable": "5.0.2"
+  }
+}

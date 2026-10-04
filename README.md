@@ -111,8 +111,8 @@ or **0.1 USDC** for a bridge.
 
 ## SDK integration
 
-The scaffold includes wallet setup, the provider and modal styles. Your app
-submits the intent:
+The scaffold includes wallet setup, the provider and modal styles. Call
+`noob.run()` from your app to open the modal with an intent:
 
 ```ts
 import { noob } from "@9oob/sdk";

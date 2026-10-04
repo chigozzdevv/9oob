@@ -1,19 +1,36 @@
 {
   "name": "9oob",
-  "description": "Reviewed natural-language intent execution on Hedera and Base",
+  "description": "Embed natural language onchain actions in your Hedera app.",
   "version": "0.1.0",
-  "networks": ["hedera-testnet", "base-sepolia"],
-  "workspaces": {
-    "schema": "packages/schema",
-    "sdk": "packages/sdk",
-    "server": "server",
-    "client": "client",
-    "contract": "contract"
-  },
-  "commands": {
-    "setup": "yarn setup",
-    "dev": "yarn dev",
-    "check": "yarn check",
-    "build": "yarn build"
+  "create-scaffold-hbar": {
+    "capabilities": {
+      "frontend": ["nextjs-app"],
+      "solidityFramework": ["foundry"],
+      "packageManager": ["yarn"]
+    },
+    "defaults": {
+      "frontend": "nextjs-app",
+      "solidityFramework": "foundry",
+      "packageManager": "yarn"
+    },
+    "requirements": {
+      "node": ">=22.12.0",
+      "yarn": "3.2.3"
+    },
+    "outro": {
+      "sections": [
+        {
+          "title": "Start 9oob",
+          "steps": [
+            { "command": "{run:setup}" },
+            {
+              "text": "Set your OpenAI key and database in server/.env, and your Reown project ID in packages/nextjs/.env.local. See README.md for setup and testnet funding."
+            },
+            { "command": "{run:next:dev}" },
+            { "url": "http://localhost:3000/demo" }
+          ]
+        }
+      ]
+    }
   }
 }

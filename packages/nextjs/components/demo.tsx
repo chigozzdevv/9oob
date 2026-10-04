@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LiquiditySnapshotSchema, type LiquiditySnapshot } from "@9oob/schema";
-import { LoaderCircle, ExternalLink } from "lucide-react";
+import { ChevronDown, LoaderCircle, ExternalLink } from "lucide-react";
 import { IntentInput } from "~~/components/intent-input";
 
 const examples = [
@@ -16,6 +16,25 @@ const examples = [
 export function Demo() {
   const [snapshot, setSnapshot] = useState<LiquiditySnapshot | null>(null);
   const [unavailable, setUnavailable] = useState(false);
+  const funding = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    const closeOutside = (event: PointerEvent) => {
+      const menu = funding.current;
+      if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+    };
+    const closeWithEscape = (event: KeyboardEvent) => {
+      const menu = funding.current;
+      if (event.key !== "Escape" || !menu?.open) return;
+      menu.open = false;
+      menu.querySelector("summary")?.focus();
+    };
+    document.addEventListener("pointerdown", closeOutside);
+    document.addEventListener("keydown", closeWithEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOutside);
+      document.removeEventListener("keydown", closeWithEscape);
+    };
+  }, []);
   useEffect(() => {
     const controller = new AbortController();
     let active = true;
@@ -47,11 +66,14 @@ export function Demo() {
   return (
     <section className="demo-shell">
       <div className="demo-toolbar">
-        <span className="demo-network">Testnet · Hedera + Base Sepolia</span>
-        <details className="demo-funding">
-          <summary>Get test tokens</summary>
+        <span className="demo-network" title="Hedera Testnet · Base Sepolia">
+          Testnet · Hedera + Base
+        </span>
+        <details className="demo-funding" ref={funding}>
+          <summary>
+            Get test tokens <ChevronDown size={14} aria-hidden="true" />
+          </summary>
           <div className="demo-funding-panel">
-            <p>Use your own testnet wallet. Get HBAR for Hedera actions, or ETH and USDC for Base.</p>
             <a href="https://portal.hedera.com/faucet" target="_blank" rel="noreferrer">
               Hedera HBAR <ExternalLink size={13} />
             </a>
@@ -61,7 +83,7 @@ export function Demo() {
             <a href="https://faucet.circle.com/" target="_blank" rel="noreferrer">
               Base Sepolia USDC <ExternalLink size={13} />
             </a>
-            <p>For Hedera USDC, swap a small amount of HBAR here. This demo uses SaucerSwap test USDC 0.0.5449.</p>
+            <p>For Hedera USDC, swap HBAR.</p>
           </div>
         </details>
       </div>

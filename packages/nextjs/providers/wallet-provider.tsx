@@ -6,7 +6,6 @@ import { WagmiProvider, useAccount, useWalletClient } from "wagmi";
 import { useAppKitAccount, useAppKitProvider } from "@reown/appkit/react";
 import { hederaNamespace, type HederaProvider } from "@hashgraph/hedera-wallet-connect";
 import { useEffect } from "react";
-import { Footer } from "~~/components/footer";
 import { Header } from "~~/components/header";
 import { sendNativeTransaction } from "~~/providers/wallet/native-signer";
 import { initAppKit } from "~~/providers/wallet/appkit";
@@ -25,10 +24,9 @@ const AppShell = ({
 }) => {
   return (
     <>
-      <div className="flex flex-col min-h-screen" data-wallet-connector={connectorId}>
+      <div className="app-shell flex flex-col min-h-screen" data-wallet-connector={connectorId}>
         <Header address={wallet.accountId} manageWallet={() => void wallet.connect()} />
         <main className="relative flex flex-col flex-1">{children}</main>
-        <Footer />
       </div>
     </>
   );

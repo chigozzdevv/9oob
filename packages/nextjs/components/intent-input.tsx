@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import { noob } from "@9oob/sdk";
 import { plainTextIntent } from "@9oob/schema";
 import { ArrowUp, LoaderCircle } from "lucide-react";
@@ -9,6 +9,7 @@ export function IntentInput({ examples = [] }: { examples?: Array<{ label: strin
   const [intent, setIntent] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const input = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (!error) return;
@@ -42,9 +43,10 @@ export function IntentInput({ examples = [] }: { examples?: Array<{ label: strin
               key={example.label}
               type="button"
               disabled={pending}
+              aria-pressed={intent === example.intent}
               onClick={() => {
                 setIntent(example.intent);
-                document.getElementById("intent")?.focus();
+                input.current?.focus();
               }}
             >
               {example.label}
@@ -58,11 +60,12 @@ export function IntentInput({ examples = [] }: { examples?: Array<{ label: strin
         </label>
         <textarea
           id="intent"
+          ref={input}
           value={intent}
           onChange={event => setIntent(event.target.value)}
           placeholder="Describe what you want to do…"
           maxLength={2000}
-          rows={3}
+          rows={2}
         />
         <div className="home-composer-footer">
           <span>{intent.length ? `${intent.length}/2,000` : ""}</span>

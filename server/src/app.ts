@@ -8,8 +8,11 @@ import { IntentService } from "./features/intent/index.js";
 import { readServerConfig, ConfigurationError } from "./shared/config/env.js";
 import { jsonResponse } from "./shared/http/http.response.js";
 import { LiquidityService, liquidityRoute } from "./features/liquidity/index.js";
+import { isAllowedServerKey } from "./shared/auth/auth.middleware.js";
 
-export function createNoobApp(options: { service?: ExecutionService; appOrigin?: string; worker?: boolean } = {}) {
+export function createNoobApp(
+  options: { service?: ExecutionService; appOrigin?: string; serverApiKey?: string; worker?: boolean } = {},
+) {
   let service = options.service;
   let store: ExecutionRepository | undefined;
   let stopWorker: (() => void) | undefined;
@@ -35,6 +38,8 @@ export function createNoobApp(options: { service?: ExecutionService; appOrigin?:
           status: "ok",
           configured: Boolean(options.service || process.env.OPENAI_API_KEY?.trim()),
         });
+      if (!isAllowedServerKey(request, options.serverApiKey ?? process.env.NOOB_SERVER_API_KEY?.trim()))
+        return jsonResponse({ error: "Execution server access is not allowed" }, 401);
       try {
         const pools = liquidityRoute(request, liquidity);
         if (pools) return pools;

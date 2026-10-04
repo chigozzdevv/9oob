@@ -1,5 +1,15 @@
 import { bearerCapability } from "@9oob/schema";
 import { hashCapability } from "./auth.service.js";
+import { timingSafeEqual } from "node:crypto";
+
+export function isAllowedServerKey(request: Request, requiredKey?: string): boolean {
+  if (!requiredKey) return true;
+  const supplied = request.headers.get("x-noob-server-key");
+  return (
+    supplied !== null &&
+    timingSafeEqual(Buffer.from(hashCapability(supplied)), Buffer.from(hashCapability(requiredKey)))
+  );
+}
 
 export function getBearerToken(request: Request): string | null {
   return bearerCapability(request.headers.get("authorization"));

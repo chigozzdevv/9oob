@@ -10,6 +10,8 @@ export async function proxyExecutionRequest(request: Request): Promise<Response>
     const value = request.headers.get(name);
     if (value) headers.set(name, value);
   }
+  const serverApiKey = process.env.NOOB_SERVER_API_KEY?.trim();
+  if (serverApiKey) headers.set("x-noob-server-key", serverApiKey);
   try {
     const response = await fetch(target, {
       method: request.method,
@@ -24,6 +26,6 @@ export async function proxyExecutionRequest(request: Request): Promise<Response>
       headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
     });
   } catch {
-    return Response.json({ error: "Execution server is unavailable. Start it with yarn dev." }, { status: 503 });
+    return Response.json({ error: "Execution server is temporarily unavailable. Please try again." }, { status: 503 });
   }
 }

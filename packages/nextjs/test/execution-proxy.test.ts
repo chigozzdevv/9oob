@@ -47,3 +47,26 @@ test("proxy rejects foreign and missing origins before contacting the server", a
   }
   assert.equal(calls, 0);
 });
+
+test("the hosted proxy supplies its server key without replacing the execution capability", async context => {
+  const previous = process.env.NOOB_SERVER_API_KEY;
+  process.env.NOOB_SERVER_API_KEY = "private-server-key";
+  context.after(() => {
+    if (previous === undefined) delete process.env.NOOB_SERVER_API_KEY;
+    else process.env.NOOB_SERVER_API_KEY = previous;
+  });
+  let forwarded = new Headers();
+  context.mock.method(globalThis, "fetch", async (_url: URL, options?: RequestInit) => {
+    forwarded = new Headers(options?.headers);
+    return Response.json({ execution: { status: "completed" } });
+  });
+  const response = await proxyExecutionRequest(
+    new Request("https://demo.example/api/noob/executions/id", {
+      headers: { authorization: "Bearer execution-capability", "x-noob-server-key": "untrusted-browser-key" },
+    }),
+  );
+  assert.equal(response.status, 200);
+  assert.equal(forwarded.get("x-noob-server-key"), "private-server-key");
+  assert.equal(forwarded.get("authorization"), "Bearer execution-capability");
+  assert.equal(response.headers.get("x-noob-server-key"), null);
+});

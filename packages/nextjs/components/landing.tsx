@@ -299,7 +299,12 @@ export function Landing() {
               <Link className="landing-button landing-button-primary" href="/demo">
                 Try the demo <ArrowUpRight size={18} aria-hidden="true" />
               </Link>
-              <a className="landing-text-link" href="#get-started">
+              <a
+                className="landing-text-link"
+                href="https://github.com/chigozzdevv/9oob/blob/main/README.md#setup"
+                target="_blank"
+                rel="noreferrer"
+              >
                 Start building <ArrowRight size={17} aria-hidden="true" />
               </a>
             </div>
@@ -390,7 +395,12 @@ export function Landing() {
             people speak.
           </h2>
           <p>Set up your provider once. Pass an intent.</p>
-          <a className="landing-button landing-button-primary" href="#get-started">
+          <a
+            className="landing-button landing-button-primary"
+            href="https://github.com/chigozzdevv/9oob/blob/main/README.md#setup"
+            target="_blank"
+            rel="noreferrer"
+          >
             Start building <ArrowUpRight size={18} aria-hidden="true" />
           </a>
         </section>

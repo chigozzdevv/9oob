@@ -1,0 +1,44 @@
+# dependencies
+node_modules
+
+# yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# eslint
+.eslintcache
+
+# misc
+.DS_Store
+
+# IDE
+.vscode
+.idea
+
+# cli
+dist
+
+.env*
+!.env.example
+**/.secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+*.log
+**/.next/
+**/next-env.d.ts
+**/coverage/
+client/.data/
+
+server/.data/
+**/.env.local
+**/*.tsbuildinfo
+contract/out/
+contract/cache/
+contract/broadcast/
+contract/.secrets/

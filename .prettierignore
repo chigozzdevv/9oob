@@ -1,0 +1,15 @@
+**/node_modules/**
+**/dist/**
+**/.next/**
+.yarn/**
+yarn.lock
+**/*.tsbuildinfo
+**/next-env.d.ts
+**/.data/**
+**/.env*
+LICENSE
+
+contract/out/**
+contract/cache/**
+contract/broadcast/**
+contract/.secrets/**

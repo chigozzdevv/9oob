@@ -1,0 +1,64 @@
+{
+  "name": "9oob",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "server",
+      "client",
+      "contract"
+    ]
+  },
+  "resolutions": {
+    "@wagmi/connectors": "6.2.0"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "sh scripts/lint.sh",
+    "postinstall": "husky",
+    "precommit": "lint-staged",
+    "lint-staged": "lint-staged",
+    "build:packages": "node scripts/workspaces.mjs packages",
+    "next:build": "yarn build",
+    "next:check-types": "yarn workspace @9oob/client check-types",
+    "next:format": "yarn workspace @9oob/client format",
+    "next:lint": "yarn workspace @9oob/client lint",
+    "next:serve": "yarn workspace @9oob/client serve",
+    "next:dev": "yarn dev",
+    "next:start": "yarn dev",
+    "check-types": "sh scripts/typecheck.sh",
+    "test": "sh scripts/test.sh && yarn contract:test",
+    "contract:build": "yarn workspace @9oob/contract build",
+    "contract:test": "yarn workspace @9oob/contract test",
+    "check": "yarn lint && yarn check-types && yarn test",
+    "setup": "sh scripts/setup.sh",
+    "dev": "sh scripts/dev.sh",
+    "build": "sh scripts/build.sh",
+    "server:dev": "yarn workspace @9oob/server dev",
+    "server:serve": "yarn workspace @9oob/server serve",
+    "testnet:deploy": "yarn workspace @9oob/server testnet:deploy",
+    "testnet:validate": "yarn workspace @9oob/server testnet:validate",
+    "client:dev": "yarn workspace @9oob/client dev",
+    "client:build": "yarn workspace @9oob/client build",
+    "client:serve": "yarn workspace @9oob/client serve"
+  },
+  "packageManager": "yarn@3.2.3",
+  "devDependencies": {
+    "@next/eslint-plugin-next": "15.5.12",
+    "@typescript-eslint/eslint-plugin": "8.56.1",
+    "@typescript-eslint/parser": "8.56.1",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.4",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.5.3",
+    "tsx": "^4.20.6",
+    "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
       "@reown/appkit/react$": nodeRequire.resolve("@reown/appkit/react"),
+      "@react-native-async-storage/async-storage": false,
       porto: false,
       "porto/internal": false,
     };

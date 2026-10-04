@@ -347,16 +347,16 @@ export class ExecutionService {
       return settling;
     }
     const result = await this.routes.status(context, execution.sourceTxHash);
+    const bridgeStep = {
+      stage: "bridge" as const,
+      network: context.sourceNetwork as "hedera" | "base",
+      txHash: String(context.bridgeSourceHash ?? execution.sourceTxHash),
+      ...(context.amountRaw !== undefined ? { amountRaw: String(context.amountRaw) } : {}),
+    };
+    const steps = completed.some(step => step.network === bridgeStep.network && step.txHash === bridgeStep.txHash)
+      ? completed
+      : [...completed, bridgeStep];
     if (result.status === "completed") {
-      const steps = [
-        ...completed,
-        {
-          stage: "bridge" as const,
-          network: context.sourceNetwork as "hedera" | "base",
-          txHash: String(context.bridgeSourceHash ?? execution.sourceTxHash),
-          amountRaw: String(context.amountRaw),
-        },
-      ];
       const next = await this.routes.next(context, undefined, execution.evmAddress ?? execution.accountId!);
       return this.store.transition(
         id,
@@ -391,6 +391,7 @@ export class ExecutionService {
           sourceTxHash: null,
           stage: "claim",
           stageNetwork: context.destinationNetwork as "hedera" | "base",
+          completedSteps: steps,
           error: null,
         },
         execution.version,

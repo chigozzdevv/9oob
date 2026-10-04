@@ -354,7 +354,9 @@ test("bridge recovery waits for destination proof and persists a claim step inst
   const f = await fixture(swap);
   try {
     let statusCalls = 0;
+    const payoutHash = `0x${"b".repeat(64)}`;
     const service = f.service({
+      next: async () => null,
       status: async () =>
         ++statusCalls === 1
           ? {
@@ -368,18 +370,20 @@ test("bridge recovery waits for destination proof and persists a claim step inst
                 bridgeSourceHash: txHash,
               },
             }
-          : {
-              status: "pending",
-              claimReady: true,
-              context: {
-                provider: "layerzero",
-                sourceNetwork: "base",
-                destinationNetwork: "hedera",
-                sourceChainKey: "base",
-                guid: "0xguid",
-                bridgeSourceHash: txHash,
-              },
-            },
+          : statusCalls === 2
+            ? {
+                status: "pending",
+                claimReady: true,
+                context: {
+                  provider: "layerzero",
+                  sourceNetwork: "base",
+                  destinationNetwork: "hedera",
+                  sourceChainKey: "base",
+                  guid: "0xguid",
+                  bridgeSourceHash: txHash,
+                },
+              }
+            : { status: "completed", destinationTxHash: payoutHash },
     });
     await f.store.transition(f.capability.id, f.capability.tokenHash, ["approved"], {
       status: "settling",
@@ -397,10 +401,19 @@ test("bridge recovery waits for destination proof and persists a claim step inst
     assert.equal(claim?.stageNetwork, "hedera");
     assert.equal(claim?.status, "approved");
     assert.equal(claim?.sourceTxHash, null);
+    assert.deepEqual(claim?.completedSteps, [{ stage: "bridge", network: "base", txHash }]);
     const context = await f.store.getContext(f.capability.id, f.capability.tokenHash);
     assert.equal(context?.claimPending, true);
     assert.equal(context?.bridgeSourceHash, txHash);
     assert.equal(context?.guid, "0xguid");
+    await f.store.transition(f.capability.id, f.capability.tokenHash, ["approved"], {
+      status: "settling",
+      sourceTxHash: payoutHash,
+    });
+    const completed = await service.refresh(f.capability.id, f.capability.token);
+    assert.equal(completed?.status, "completed");
+    assert.equal(completed?.destinationTxHash, payoutHash);
+    assert.deepEqual(completed?.completedSteps, claim?.completedSteps);
   } finally {
     await f.dispose();
   }

@@ -327,6 +327,59 @@
   margin-top: 7px;
 }
 
+.noob-transactions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+
+.noob-transaction {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.noob-transaction dt {
+  color: #8a8c96;
+}
+
+.noob-transaction dd {
+  margin: 0;
+}
+
+.noob-transaction a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 24px;
+  color: #35363d;
+  text-decoration: none;
+}
+
+.noob-transaction a span {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.noob-transaction a svg {
+  flex: 0 0 auto;
+  color: #8a8c96;
+}
+
+.noob-transaction a:hover {
+  color: #111217;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.noob-transaction a:focus-visible {
+  outline: 2px solid #92939b;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
 .noob-message,
 .noob-error,
 .noob-step-label {

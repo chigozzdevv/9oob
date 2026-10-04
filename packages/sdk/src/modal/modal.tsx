@@ -11,6 +11,7 @@ import { Review } from "./review.js";
 import { Loading } from "./loading.js";
 import { NoobWordmark } from "./wordmark.js";
 import { progressMessage } from "./presentation.js";
+import { Transactions } from "./transactions.js";
 
 export type NoobProviderProps = { children: ReactNode; wallet: NoobWallet; endpoint?: string };
 
@@ -121,6 +122,7 @@ export function NoobProvider({ children, wallet, endpoint }: NoobProviderProps) 
                     kind={active.execution.interpretation.action?.kind ?? "intent"}
                   />
                 ) : null}
+                <Transactions execution={active.execution} pending={active.pendingSubmission} />
                 {active.execution && ["submitted", "settling"].includes(active.execution.status) ? (
                   <Loading label={progressMessage(active.execution)} />
                 ) : null}

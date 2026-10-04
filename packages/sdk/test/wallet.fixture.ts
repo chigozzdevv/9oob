@@ -138,10 +138,9 @@ export function providerHarness(options: {
       TransferTransaction: UnsignedTransfer,
     },
     "lucide-react": Object.fromEntries(
-      ["ArrowRight", "ArrowUp", "ChevronDown", "Circle", "LoaderCircle", "Pencil", "Send", "X"].map(name => [
-        name,
-        name,
-      ]),
+      ["ArrowRight", "ArrowUp", "ArrowUpRight", "ChevronDown", "Circle", "LoaderCircle", "Pencil", "Send", "X"].map(
+        name => [name, name],
+      ),
     ),
     "@9oob/schema": schema,
     "./transport/events.js": {

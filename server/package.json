@@ -1,0 +1,51 @@
+{
+  "name": "@9oob/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./src/index.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./intents": {
+      "source": "./src/features/intent/index.ts",
+      "types": "./src/features/intent/index.ts",
+      "import": "./dist/features/intent/index.js",
+      "default": "./dist/features/intent/index.js"
+    },
+    "./execution": {
+      "source": "./src/features/execution/index.ts",
+      "types": "./src/features/execution/index.ts",
+      "import": "./dist/features/execution/index.js",
+      "default": "./dist/features/execution/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "check-types": "tsc --noEmit",
+    "dev": "node --env-file-if-exists=.env --conditions=source --import tsx --watch src/server.ts",
+    "serve": "node --env-file-if-exists=.env dist/server.js",
+    "worker": "node --env-file-if-exists=.env dist/worker.js",
+    "testnet:deploy": "node --conditions=source --import tsx scripts/testnet-deploy.mts",
+    "testnet:validate": "node --conditions=source --import tsx scripts/live-suite.mts"
+  },
+  "dependencies": {
+    "@9oob/schema": "workspace:^",
+    "lossless-json": "4.3.1",
+    "mongodb": "^6.20.0",
+    "openai": "latest",
+    "pg": "^8.16.3",
+    "viem": "2.57.2",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.14",
+    "@types/node": "^18.19.50",
+    "@types/pg": "^8.15.5",
+    "mongodb-memory-server-core": "^10.2.0",
+    "typescript": "^5.8.2"
+  }
+}

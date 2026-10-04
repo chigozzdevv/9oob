@@ -172,6 +172,10 @@ export function providerHarness(options: {
       require: (name: string) => {
         if (name in modules) return modules[name];
         if (!name.startsWith(".")) throw new Error(`Unexpected import ${name}`);
+        if (name.endsWith(".css")) {
+          readFileSync(resolve(dirname(filename), name));
+          return {};
+        }
         const base = resolve(dirname(filename), name.replace(/\.js$/, ""));
         let file = `${base}.ts`;
         try {

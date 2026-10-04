@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "source": "./src/index.ts",
@@ -10,7 +13,10 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./styles.css": "./src/modal/modal.css",
+    "./styles.css": {
+      "source": "./src/modal/modal.css",
+      "default": "./dist/modal/modal.css"
+    },
     "./wordmark": {
       "source": "./src/modal/wordmark.tsx",
       "types": "./src/modal/wordmark.tsx",
@@ -19,7 +25,7 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && node scripts/copy-styles.mjs",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {

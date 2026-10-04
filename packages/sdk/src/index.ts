@@ -1,3 +1,5 @@
+import "./modal/modal.css";
+
 export { NoobProvider } from "./modal/modal.js";
 export type { NoobProviderProps } from "./modal/modal.js";
 export { NoobWordmark } from "./modal/wordmark.js";

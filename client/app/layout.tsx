@@ -1,6 +1,5 @@
 import { AppProvider } from "~~/providers/app-provider";
 import "~~/app/globals.css";
-import "@9oob/sdk/styles.css";
 import { getMetadata } from "~~/services/metadata";
 
 export const metadata = getMetadata({

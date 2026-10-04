@@ -10,8 +10,12 @@ function tests(directory) {
 }
 
 const files = ["server/test", "packages/schema/test", "packages/sdk/test", "client/test"].flatMap(tests);
-const result = spawnSync(process.execPath, ["--conditions=source", "--import", "tsx", "--test", ...files], {
-  stdio: "inherit",
-});
+const result = spawnSync(
+  process.execPath,
+  ["--conditions=source", "--import", "tsx", "--import", "./scripts/test-setup.mjs", "--test", ...files],
+  {
+    stdio: "inherit",
+  },
+);
 if (result.error) throw result.error;
 process.exit(result.status ?? 1);

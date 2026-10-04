@@ -1,3 +1,5 @@
+import "./modal.css";
+
 export function NoobWordmark({ className = "" }: { className?: string }) {
   return (
     <span className={`noob-wordmark ${className}`}>

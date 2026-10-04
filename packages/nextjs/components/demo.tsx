@@ -83,7 +83,6 @@ export function Demo() {
             <a href="https://faucet.circle.com/" target="_blank" rel="noreferrer">
               Base Sepolia USDC <ExternalLink size={13} />
             </a>
-            <p>For Hedera USDC, swap HBAR.</p>
           </div>
         </details>
       </div>

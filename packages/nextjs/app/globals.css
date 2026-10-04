@@ -259,13 +259,6 @@
   box-shadow: 0 12px 32px rgb(40 35 56 / 8%);
   line-height: 1.6;
 }
-.demo-funding-panel p {
-  margin: 4px 8px 6px;
-  padding-top: 10px;
-  border-top: 1px solid var(--app-border);
-  color: var(--app-muted);
-  font-size: 11px;
-}
 .demo-funding-panel a {
   display: flex;
   align-items: center;

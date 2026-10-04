@@ -41,7 +41,7 @@ test("accepts only explicitly supported action structures", () => {
   );
 });
 
-test("allows a wallet-relative recipient for swaps while transfers require an address", () => {
+test("allows a wallet-relative recipient for swaps and bridges while transfers require an address", () => {
   const swap = {
     kind: "swap",
     sourceNetwork: "hedera",
@@ -54,6 +54,9 @@ test("allows a wallet-relative recipient for swaps while transfers require an ad
   assert.equal(IntentActionSchema.safeParse(swap).success, true);
   assert.equal(IntentActionSchema.safeParse({ ...swap, recipient: "0.0.2" }).success, true);
   assert.equal(IntentActionSchema.safeParse({ ...swap, recipient: "another wallet" }).success, false);
+  const bridge = { ...swap, kind: "bridge", destinationNetwork: "base", sourceAsset: "USDC" };
+  assert.equal(IntentActionSchema.safeParse(bridge).success, true);
+  assert.equal(IntentActionSchema.safeParse({ ...bridge, recipient: "another wallet" }).success, false);
   assert.equal(
     IntentActionSchema.safeParse({
       kind: "transfer",

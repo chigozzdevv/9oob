@@ -26,7 +26,7 @@ export const IntentActionSchema = z.discriminatedUnion("kind", [
       sourceAsset: z.string().trim().min(1).max(32),
       destinationAsset: z.string().trim().min(1).max(32),
       amount: z.string().regex(/^\d+(\.\d{1,18})?$/),
-      recipient: z.string().min(1).max(128),
+      recipient: z.union([z.literal("self"), AccountIdSchema]),
     })
     .strict(),
   z

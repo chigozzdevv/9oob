@@ -36,7 +36,7 @@ export class ActionRegistry {
     )
       throw new Error("Use a Hedera account ID or EVM address for the recipient");
     if (action.kind === "swap" || action.kind === "bridge") {
-      if (action.kind === "swap" && action.recipient !== "self") {
+      if (action.recipient !== "self") {
         if (action.destinationNetwork === "hedera") AccountIdSchema.parse(action.recipient);
         else EvmAddressSchema.parse(action.recipient);
       }
@@ -64,18 +64,15 @@ export class ActionRegistry {
       case "bridge":
       case "swap": {
         const sender = EvmAddressSchema.parse(evmAddress ?? accountId);
-        const resolved =
-          action.kind === "swap"
-            ? {
-                ...action,
-                recipient:
-                  action.recipient === "self"
-                    ? sender
-                    : action.recipient.startsWith("0.0.")
-                      ? hederaAccountAddress(await this.hedera.account(action.recipient))
-                      : action.recipient,
-              }
-            : action;
+        const resolved = {
+          ...action,
+          recipient:
+            action.recipient === "self"
+              ? sender
+              : action.recipient.startsWith("0.0.")
+                ? hederaAccountAddress(await this.hedera.account(action.recipient))
+                : action.recipient,
+        };
         return { ...interpretation, action: resolved, review: await this.routes.review(resolved, sender) };
       }
     }

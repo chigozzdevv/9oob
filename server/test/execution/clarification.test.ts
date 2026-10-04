@@ -27,72 +27,90 @@ const swap = (recipient = "self") =>
     review: null,
   });
 
-test("swap output binds to the connected wallet before review and remains bound when preparing after recovery", async () => {
-  const repository = await createTestRepository();
-  const address = `0x${"1".repeat(40)}`;
-  let reviews = 0;
-  const interpreter = { interpret: async () => swap() } as unknown as IntentService;
-  const routes = {
-    review: async (action: IntentAction, sender: string) => {
-      reviews++;
-      assert.equal(sender, address);
-      assert.equal(action.kind === "swap" && action.recipient, address);
-      return {
-        title: swapIntent,
-        facts: [`To: ${address}`],
-        quote: { amountRaw: "10", amountDecimals: 6, amountSymbol: "USDC" },
-      };
+const bridge = (recipient = "self") =>
+  InterpretationSchema.parse({
+    outcome: "ready",
+    action: {
+      kind: "bridge",
+      sourceNetwork: "hedera",
+      destinationNetwork: "base",
+      sourceAsset: "USDC",
+      destinationAsset: "USDC",
+      amount: "0.1",
+      recipient,
     },
-    prepare: async (action: IntentAction, sender: string) => {
-      assert.equal(sender, address);
-      assert.equal(action.kind === "swap" && action.recipient, address);
-      return {
-        phase: "source",
-        label: "Confirm swap",
-        transaction: { from: sender, to: address, data: "0x", value: "0" },
-        context: { sourceChainKey: "hedera", recipient: address },
-      };
-    },
-  } as unknown as TestnetProvider;
-  const service = new ExecutionService(repository, interpreter, routes, {} as HederaProvider);
-  try {
-    const start = await service.start(swapIntent);
-    assert.equal(start.execution.status, "awaiting_wallet");
-    assert.equal(
-      start.execution.interpretation.action?.kind === "swap" && start.execution.interpretation.action.recipient,
-      "self",
-    );
-    assert.equal(reviews, 0);
-    assert.equal(await service.prepare(start.execution.id, start.accessToken), null);
-    const bound = await service.connectWallet(start.execution.id, start.accessToken, "0.0.1", address);
-    assert.equal(bound?.status, "awaiting_approval");
-    assert.deepEqual(bound?.interpretation.review?.facts, [`To: ${address}`]);
-    const recovered = new ExecutionService(repository, interpreter, routes, {} as HederaProvider);
-    assert.equal(
-      await recovered.connectWallet(start.execution.id, start.accessToken, `0x${"2".repeat(40)}`, null),
-      null,
-    );
-    await recovered.approve(start.execution.id, start.accessToken);
-    const prepared = await recovered.prepare(start.execution.id, start.accessToken);
-    assert.equal(prepared?.execution.status, "awaiting_signature");
-    assert.equal(prepared?.execution.accountId, address);
-    assert.equal(
-      prepared?.execution.interpretation.action?.kind === "swap" && prepared.execution.interpretation.action.recipient,
-      address,
-    );
-    assert.equal(reviews, 1);
-    assert.equal(prepared?.execution.sourceTxHash, null);
-  } finally {
-    await repository.close();
-  }
-});
+    message: "",
+    review: null,
+  });
 
-test("explicit swap recipients are preserved or resolved on Hedera, never replaced with the sender", async () => {
+for (const kind of ["swap", "bridge"] as const)
+  test(`${kind} output binds to the connected wallet before review and remains bound when preparing after recovery`, async () => {
+    const repository = await createTestRepository();
+    const address = `0x${"1".repeat(40)}`;
+    const intent = kind === "swap" ? swapIntent : "Bridge 0.1 USDC from Hedera Testnet to Base Sepolia";
+    let reviews = 0;
+    const interpreter = { interpret: async () => (kind === "swap" ? swap() : bridge()) } as unknown as IntentService;
+    const routes = {
+      review: async (action: IntentAction, sender: string) => {
+        reviews++;
+        assert.equal(sender, address);
+        assert.equal(action.kind === kind && action.recipient, address);
+        return {
+          title: intent,
+          facts: [`To: ${address}`],
+          quote: { amountRaw: "10", amountDecimals: 6, amountSymbol: "USDC" },
+        };
+      },
+      prepare: async (action: IntentAction, sender: string) => {
+        assert.equal(sender, address);
+        assert.equal(action.kind === kind && action.recipient, address);
+        return {
+          phase: "source",
+          label: `Confirm ${kind}`,
+          transaction: { from: sender, to: address, data: "0x", value: "0" },
+          context: { sourceChainKey: "hedera", recipient: address },
+        };
+      },
+    } as unknown as TestnetProvider;
+    const service = new ExecutionService(repository, interpreter, routes, {} as HederaProvider);
+    try {
+      const start = await service.start(intent);
+      assert.equal(start.execution.status, "awaiting_wallet");
+      assert.equal(
+        start.execution.interpretation.action?.kind === kind && start.execution.interpretation.action.recipient,
+        "self",
+      );
+      assert.equal(reviews, 0);
+      assert.equal(await service.prepare(start.execution.id, start.accessToken), null);
+      const bound = await service.connectWallet(start.execution.id, start.accessToken, "0.0.1", address);
+      assert.equal(bound?.status, "awaiting_approval");
+      assert.deepEqual(bound?.interpretation.review?.facts, [`To: ${address}`]);
+      const recovered = new ExecutionService(repository, interpreter, routes, {} as HederaProvider);
+      assert.equal(
+        await recovered.connectWallet(start.execution.id, start.accessToken, `0x${"2".repeat(40)}`, null),
+        null,
+      );
+      await recovered.approve(start.execution.id, start.accessToken);
+      const prepared = await recovered.prepare(start.execution.id, start.accessToken);
+      assert.equal(prepared?.execution.status, "awaiting_signature");
+      assert.equal(prepared?.execution.accountId, address);
+      assert.equal(
+        prepared?.execution.interpretation.action?.kind === kind && prepared.execution.interpretation.action.recipient,
+        address,
+      );
+      assert.equal(reviews, 1);
+      assert.equal(prepared?.execution.sourceTxHash, null);
+    } finally {
+      await repository.close();
+    }
+  });
+
+test("explicit swap and bridge recipients are preserved or resolved on Hedera, never replaced with the sender", async () => {
   const sender = `0x${"1".repeat(40)}`;
   const recipient = `0x${"2".repeat(40)}`;
   const recipients: string[] = [];
   const routes = {
-    review: async (action: Extract<IntentAction, { kind: "swap" }>) => {
+    review: async (action: Extract<IntentAction, { kind: "swap" | "bridge" }>) => {
       recipients.push(action.recipient);
       return { title: swapIntent, facts: [`To: ${action.recipient}`], quote: null };
     },
@@ -104,15 +122,22 @@ test("explicit swap recipients are preserved or resolved on Hedera, never replac
     },
   } as unknown as HederaProvider;
   const plan = new PlanService(hedera, routes);
-  for (const destination of [recipient, "0.0.2"]) {
-    const reviewed = await plan.review(swap(destination), sender, sender);
-    assert.equal(reviewed.outcome, "ready");
-    assert.equal(reviewed.action?.kind === "swap" && reviewed.action.recipient, recipient);
+  for (const interpretation of [swap, bridge]) {
+    for (const destination of [recipient, "0.0.2"]) {
+      const request = interpretation(destination);
+      if (request.action?.kind === "bridge") {
+        request.action.sourceNetwork = "base";
+        request.action.destinationNetwork = "hedera";
+      }
+      const reviewed = await plan.review(request, sender, sender);
+      assert.equal(reviewed.outcome, "ready");
+      assert.equal(reviewed.action && "recipient" in reviewed.action && reviewed.action.recipient, recipient);
+    }
+    const base = interpretation("0.0.2");
+    if (base.action && "destinationNetwork" in base.action) base.action.destinationNetwork = "base";
+    assert.equal((await plan.review(base, null, null)).outcome, "unsupported");
   }
-  const base = swap("0.0.2");
-  if (base.action?.kind === "swap") base.action.destinationNetwork = "base";
-  assert.equal((await plan.review(base, null, null)).outcome, "unsupported");
-  assert.deepEqual(recipients, [recipient, recipient]);
+  assert.deepEqual(recipients, [recipient, recipient, recipient, recipient]);
 });
 
 test("clarification preserves the original intent and prior answers, then reads Base ETH without signing", async () => {

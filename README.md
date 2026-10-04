@@ -1,7 +1,7 @@
 # 9oob
 
-Embed natural language onchain actions in your Hedera app. Configure a wallet
-adapter, mount `NoobProvider`, and call `noob.run(intent)`. Users check balances,
+Embed natural language onchain actions in your Hedera app. Set up the scaffold
+and call `noob.run(intent)`. Users check balances,
 transfer, swap and bridge through one guided conversation.
 
 **Networks:** Hedera Testnet and Base Sepolia. **Swaps:** SaucerSwap.
@@ -113,30 +113,39 @@ or **0.1 USDC** for a bridge.
 
 ## SDK integration
 
-Mount one provider with your app's wallet adapter and execution endpoint:
+The scaffold includes wallet setup, the provider and modal styles. Your app
+submits the intent:
 
-```tsx
-import { NoobProvider, noob, type NoobWallet } from "@9oob/sdk";
-import "@9oob/sdk/styles.css";
+```ts
+import { noob } from "@9oob/sdk";
 
-function App({ wallet }: { wallet: NoobWallet }) {
-  return (
-    <NoobProvider wallet={wallet} endpoint="/api/noob">
-      <button onClick={() => void noob.run("Check my HBAR balance")}>Check balance</button>
-    </NoobProvider>
-  );
-}
+await noob.run("Check my HBAR balance");
 ```
 
-[`NoobWallet`](packages/sdk/src/wallet/wallet.ts) supplies identity, connection,
-signing and network switching. The SDK owns chat, review, execution and recovery;
-`noob.run()` resolves with the final persisted execution, including failure or
-cancellation. Use a client component in Next.js.
+The SDK handles clarification, wallet connection, review, signing, progress and
+recovery. Styles load automatically. `noob.run()` resolves with the final persisted
+execution, including failure or cancellation. Call it from a client component in
+Next.js; [`intent-input.tsx`](client/components/intent-input.tsx) is the runnable example.
 
-The runnable integration is in
-[`wallet-provider.tsx`](client/providers/wallet-provider.tsx) and
-[`intent-input.tsx`](client/components/intent-input.tsx), using the bundled SDK
-workspace.
+<details>
+<summary>Integrate into an existing React app</summary>
+
+Mount the provider once inside your existing wallet setup:
+
+```tsx
+import { NoobProvider } from "@9oob/sdk";
+
+<NoobProvider wallet={appWallet}>
+  <App />
+</NoobProvider>;
+```
+
+`appWallet` implements [`NoobWallet`](packages/sdk/src/wallet/wallet.ts): identity,
+connection, signing and network switching. The scaffold's
+[`wallet-provider.tsx`](client/providers/wallet-provider.tsx) supplies this adapter.
+The endpoint defaults to `/api/noob`; pass `endpoint` only for a different API URL.
+
+</details>
 
 ## Testnet bridge
 
@@ -191,7 +200,6 @@ MongoDB and Postgres preserve execution state, preparation context and submissio
 history with atomic updates. Changing `DB_MODE` or `DB_URI` selects different
 storage; pending executions must be recovered from their original database.
 The worker verifies existing submissions without signing new source transactions.
-See [noob.md](noob.md) for the full source tree, API and recovery design.
 
 ```sh
 yarn check

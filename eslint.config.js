@@ -10,7 +10,7 @@ module.exports = [
   { ignores: ["**/node_modules/**", "**/dist/**", "**/.next/**", ".yarn/**", "**/next-env.d.ts"] },
   {
     plugins: { "@next/next": next },
-    settings: { next: { rootDir: path.join(__dirname, "client") } },
+    settings: { next: { rootDir: path.join(__dirname, "packages", "nextjs") } },
     rules: { ...next.configs.recommended.rules, ...next.configs["core-web-vitals"].rules },
   },
   {

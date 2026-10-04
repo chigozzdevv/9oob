@@ -34,10 +34,10 @@ const managerAbi = parseAbi([
   "function setReceiveLibrary(address oapp, uint32 eid, address lib, uint256 gracePeriod)",
   "function setConfig(address oapp, address lib, (uint32 eid, uint32 configType, bytes config)[] params)",
 ]);
-const manifest = readJson("contract/deployments/testnet.json");
-const artifact = JSON.parse(readFileSync(resolve(root, "contract/out/NoobBridge.sol/NoobBridge.json"), "utf8"));
+const manifest = readJson("packages/foundry/deployments/testnet.json");
+const artifact = JSON.parse(readFileSync(resolve(root, "packages/foundry/out/NoobBridge.sol/NoobBridge.json"), "utf8"));
 const updateEnv = (network: Network, address: string, remote: string) => {
-  const path = resolve(root, `contract/.secrets/${network}.env`);
+  const path = resolve(root, `packages/foundry/.secrets/${network}.env`);
   let content = readFileSync(path, "utf8");
   for (const [key, value] of Object.entries({
     BRIDGE_ADDRESS: address,
@@ -69,7 +69,7 @@ try {
       manifest[network].bridgeAddress = receipt.contractAddress;
       manifest[network].deploymentTxHash = receipt.transactionHash;
       manifest.status = "deployed-partial";
-      saveJson("contract/deployments/testnet.json", manifest);
+      saveJson("packages/foundry/deployments/testnet.json", manifest);
     }
     const bridge = manifest[network].bridgeAddress as Address;
     await rpc.assertContract(bridge);
@@ -135,14 +135,14 @@ try {
     const peer = await clients[network].read<Hex>(bridge, bridgeAbi, "peers", [eid]);
     if (peer.toLowerCase() !== pad(remote).toLowerCase()) throw new Error("Reciprocal peer verification failed");
     manifest[network].configured = true;
-    saveJson("contract/deployments/testnet.json", manifest);
+    saveJson("packages/foundry/deployments/testnet.json", manifest);
     await call("fund-approval", tokenAddress(network, "USDC"), tokenAbi, "approve", [bridge, 10_000_000n]);
     await call("fund-pool", bridge, adminAbi, "fund", [10_000_000n]);
     const liquidity = await clients[network].read<bigint>(bridge, bridgeAbi, "availableLiquidity");
     if (liquidity < 10_000_000n) throw new Error("Funded pool balance is insufficient");
     manifest[network].initialFundingUSDC = "10";
     manifest[network].funded = true;
-    saveJson("contract/deployments/testnet.json", manifest);
+    saveJson("packages/foundry/deployments/testnet.json", manifest);
     console.log(
       JSON.stringify({
         network,
@@ -154,7 +154,7 @@ try {
   }
   manifest.status = "configured-and-funded";
   manifest.updatedAt = new Date().toISOString();
-  saveJson("contract/deployments/testnet.json", manifest);
+  saveJson("packages/foundry/deployments/testnet.json", manifest);
   const envPath = resolve(root, "server/.env");
   let content = readFileSync(envPath, "utf8");
   for (const [key, value] of Object.entries({

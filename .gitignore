@@ -33,12 +33,12 @@ dist
 **/.next/
 **/next-env.d.ts
 **/coverage/
-client/.data/
+packages/nextjs/.data/
 
 server/.data/
 **/.env.local
 **/*.tsbuildinfo
-contract/out/
-contract/cache/
-contract/broadcast/
-contract/.secrets/
+packages/foundry/out/
+packages/foundry/cache/
+packages/foundry/broadcast/
+packages/foundry/.secrets/

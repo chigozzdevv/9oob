@@ -140,8 +140,8 @@ const scenarios: Record<string, Scenario> = {
 };
 const scenario = scenarios[requested];
 if (!scenario) throw new Error("Choose a supported --case name");
-const privatePath = "contract/.secrets/live-validations.json";
-const publicPath = "contract/deployments/validation.testnet.json";
+const privatePath = "packages/foundry/.secrets/live-validations.json";
+const publicPath = "packages/foundry/deployments/validation.testnet.json";
 const state = existsSync(resolve(root, privatePath)) ? readJson(privatePath) : { runs: {} };
 const report = existsSync(resolve(root, publicPath))
   ? readJson(publicPath)

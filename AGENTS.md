@@ -16,7 +16,7 @@ yarn next:build
 - `packages/schema` defines the validated intent and execution contracts.
 - `server` interprets requests with OpenAI, reads Hedera Mirror Node state, prepares SaucerSwap and LayerZero testnet transactions, persists lifecycle state, and verifies settlement.
 - `packages/sdk` provides `noob.run()` and its review, signing, and progress UI.
-- `client` is the demo app, wallet setup, environment example, and same-origin proxy to the execution server.
+- `packages/nextjs` is the demo app, wallet setup, environment example, and same-origin proxy to the execution server.
 
 Keep server behavior in `server/src/features` and reusable infrastructure in `server/src/shared`. An API feature owns its model, repository, service, controller, routes, and public index. Internal features expose the services they implement without empty controller or route files.
 
@@ -31,7 +31,7 @@ Integrators select one database using `DB_MODE=mongodb` or `DB_MODE=postgres` an
 - Recheck provider data before signing and verify the submitted transaction before marking it complete.
 - Keep pending executions recoverable; do not rebroadcast an already submitted source transaction.
 - The configured routes target Hedera testnet and Base Sepolia only.
-- `contract` contains the liquidity-backed test-USDC bridge, Foundry tests and deployment scripts.
+- `packages/foundry` contains the liquidity-backed test-USDC bridge, Foundry tests and deployment scripts.
 - Bridge deployments and liquidity must be real and configured; never fabricate addresses, receipts or settlement.
 
-Use the `~~` alias for imports inside `client`. Prefer code without comments; add only short, single-line comments when they explain non-obvious behavior.
+Use the `~~` alias for imports inside `packages/nextjs`. Prefer code without comments; add only short, single-line comments when they explain non-obvious behavior.

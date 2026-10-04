@@ -9,7 +9,7 @@ yarn.lock
 **/.env*
 LICENSE
 
-contract/out/**
-contract/cache/**
-contract/broadcast/**
-contract/.secrets/**
+packages/foundry/out/**
+packages/foundry/cache/**
+packages/foundry/broadcast/**
+packages/foundry/.secrets/**

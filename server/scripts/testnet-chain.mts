@@ -8,7 +8,9 @@ import { TESTNET, type Network } from "@9oob/schema";
 import { EvmProvider } from "../src/shared/integration/evm/evm.client.js";
 
 export const root = fileURLToPath(new URL("../../", import.meta.url));
-export const wallets = JSON.parse(readFileSync(resolve(root, "contract/deployments/wallets.testnet.json"), "utf8"));
+export const wallets = JSON.parse(
+  readFileSync(resolve(root, "packages/foundry/deployments/wallets.testnet.json"), "utf8"),
+);
 export const clients = {
   hedera: new EvmProvider("hedera", TESTNET.hedera.rpc),
   base: new EvmProvider("base", TESTNET.base.rpc),
@@ -22,7 +24,7 @@ export function saveJson(path: string, value: unknown, privateFile = false) {
 }
 const keys = Object.fromEntries(
   (["hedera", "base"] as const).map(network => {
-    const key = readFileSync(resolve(root, `contract/.secrets/${network}.env`), "utf8").match(
+    const key = readFileSync(resolve(root, `packages/foundry/.secrets/${network}.env`), "utf8").match(
       /^BRIDGE_DEPLOYER_KEY=(0x[0-9a-fA-F]{64})$/m,
     )?.[1] as Hex;
     if (!key || privateKeyToAccount(key).address !== wallets[network].address)
@@ -37,7 +39,7 @@ export const accounts = {
 export const nativeSdk = createRequire(resolve(root, "packages/sdk/package.json"))("@hiero-ledger/sdk");
 export const signNative = (transaction: { sign(key: unknown): Promise<unknown> }) =>
   transaction.sign(nativeSdk.PrivateKey.fromStringECDSA((keys.hedera as string).slice(2)));
-const journalFile = "contract/deployments/operations.testnet.json";
+const journalFile = "packages/foundry/deployments/operations.testnet.json";
 const journal = existsSync(resolve(root, journalFile))
   ? readJson(journalFile)
   : { purpose: "testnet-deployment-and-validation", transactions: [] };

@@ -1,1 +1,1 @@
-module.exports = { "{server,client,packages}/**/*.{ts,tsx}": "yarn exec eslint --fix" };
+module.exports = { "{server,packages}/**/*.{ts,tsx}": "yarn exec eslint --fix" };

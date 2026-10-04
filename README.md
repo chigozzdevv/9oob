@@ -34,15 +34,12 @@ Hedera transfers.
 
 ## Testnet evidence
 
-**2026-10-03:** all 14 checks passed through the client API, OpenAI interpretation,
-MongoDB and live testnet providers: 13 completed executions and one cancellation.
-Coverage included balances, transfers, swaps, both bridge directions, combined
-routes and bridge recovery during a server restart.
+**2026-10-03:** 14 live API checks passed across balances, transfers, swaps, both
+bridge directions, combined routes and recovery.
 
-See the [validation summary](contract/deployments/validation.testnet.md) and
-[detailed receipts](contract/deployments/validation.testnet.json). This operator
-run exercised real settlement; browser extension pairing and manual wallet prompts
-were not part of it.
+The Hedera → Base bridge has a verified [Hedera transaction](https://hashscan.io/testnet/transaction/0x0d065f06bd664a64d3aabff5b17ea476fb73e43bc18e95f4493e55b6cf2a4c17)
+and [Base payout](https://sepolia.basescan.org/tx/0x2a4644461c2e3ce2235a07cc8cbedd0939eb3c2ebe608dbce52be5aa02928101).
+See the [full receipts](packages/foundry/deployments/validation.testnet.json).
 
 ## Setup
 
@@ -55,7 +52,8 @@ and `yarn check`; Docker Desktop is needed only for the local MongoDB option.
 npm create scaffold-hbar@latest -- --template chigozzdevv/9oob
 ```
 
-Choose your project name and Yarn, then enter the generated folder and run:
+Enter your project name. The template selects Next.js, Foundry and Yarn.
+Enter the generated folder and run:
 
 ```sh
 yarn setup
@@ -78,7 +76,7 @@ For Postgres, use `DB_MODE=postgres` and a full connection string such as
 `postgresql://username:password@localhost:5432/9oob`. Startup initializes the
 selected database's tables or indexes.
 
-In `client/.env.local`, set your Reown project ID:
+In `packages/nextjs/.env.local`, set your Reown project ID:
 
 ```dotenv
 NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=YOUR_PROJECT_ID
@@ -125,7 +123,7 @@ await noob.run("Check my HBAR balance");
 The SDK handles clarification, wallet connection, review, signing, progress and
 recovery. Styles load automatically. `noob.run()` resolves with the final persisted
 execution, including failure or cancellation. Call it from a client component in
-Next.js; [`intent-input.tsx`](client/components/intent-input.tsx) is the runnable example.
+Next.js; [`intent-input.tsx`](packages/nextjs/components/intent-input.tsx) is the runnable example.
 
 <details>
 <summary>Integrate into an existing React app</summary>
@@ -142,7 +140,7 @@ import { NoobProvider } from "@9oob/sdk";
 
 `appWallet` implements [`NoobWallet`](packages/sdk/src/wallet/wallet.ts): identity,
 connection, signing and network switching. The scaffold's
-[`wallet-provider.tsx`](client/providers/wallet-provider.tsx) supplies this adapter.
+[`wallet-provider.tsx`](packages/nextjs/providers/wallet-provider.tsx) supplies this adapter.
 The endpoint defaults to `/api/noob`; pass `endpoint` only for a different API URL.
 
 </details>
@@ -158,7 +156,7 @@ checked before signing.
 | Hedera Testnet (296) | `0x827fab4b1f0059896f76a2db5e5a0f4cc4553b4a` | SaucerSwap USDC `0.0.5449`                               |
 | Base Sepolia (84532) | `0x27ce1d17ad320417f7aaf15f3e4d6dff5c13d642` | Circle USDC `0x036CbD53842c5426634e7929541eC2318f3dCF7e` |
 
-The [deployment manifest](contract/deployments/testnet.json) records deployment
+The [deployment manifest](packages/foundry/deployments/testnet.json) records deployment
 transactions and initial funding of **10 test USDC per pool**. These are distinct
 test assets; Circle's Hedera token `0.0.429274` is not used in this route. Current
 liquidity is shown in the demo.
@@ -166,19 +164,19 @@ liquidity is shown in the demo.
 <details>
 <summary>Custom deployments and live validation</summary>
 
-[`Bridge.s.sol`](contract/script/Bridge.s.sol) provides `deploy()`, `wire()` and
-`fund()` using [`contract/.env.example`](contract/.env.example). Configure reciprocal
+[`Bridge.s.sol`](packages/foundry/script/Bridge.s.sol) provides `deploy()`, `wire()` and
+`fund()` using [`packages/foundry/.env.example`](packages/foundry/.env.example). Configure reciprocal
 peers, LayerZero libraries, DVN and executor on both networks, then fund each
 receiving pool. Set your deployed addresses in `NOOB_HEDERA_BRIDGE_ADDRESS` and
 `NOOB_BASE_BRIDGE_ADDRESS` in `server/.env` and restart the server.
 
 The local operator commands `yarn testnet:deploy --broadcast` and
-`yarn testnet:validate --broadcast <case>` use ignored `contract/.secrets/` wallets
-matching the [wallet manifest](contract/deployments/wallets.testnet.json). They sign
+`yarn testnet:validate --broadcast <case>` use ignored `packages/foundry/.secrets/` wallets
+matching the [wallet manifest](packages/foundry/deployments/wallets.testnet.json). They sign
 and broadcast testnet transactions and run separately from automated tests.
 Available validation cases are in [`live-testnet.mts`](server/scripts/live-testnet.mts).
 
-Keep the [operations journal](contract/deployments/operations.testnet.json) and
+Keep the [operations journal](packages/foundry/deployments/operations.testnet.json) and
 private validation journal when resuming interrupted runs. If a destination pool
 cannot pay immediately, the bridge reserves the payout for a later claim without
 repeating the source bridge.
@@ -189,12 +187,12 @@ repeating the source bridge.
 
 | Path                   | Responsibility                                                      |
 | ---------------------- | ------------------------------------------------------------------- |
-| `client/`              | Next.js landing page, demo, wallet setup and API proxy              |
+| `packages/nextjs/`     | Next.js landing page, demo, wallet setup and API proxy              |
 | `packages/sdk/`        | `noob.run()`, modal, browser lifecycle and wallet adapters          |
 | `packages/schema/`     | Validated intent, action, review and execution contracts            |
 | `server/src/features/` | Intent, planning, actions, execution and liquidity APIs             |
 | `server/src/shared/`   | Database, configuration, authorization and provider integrations    |
-| `contract/`            | USDC bridge, Foundry tests, deployment scripts and testnet evidence |
+| `packages/foundry/`    | USDC bridge, Foundry tests, deployment scripts and testnet evidence |
 
 MongoDB and Postgres preserve execution state, preparation context and submission
 history with atomic updates. Changing `DB_MODE` or `DB_URI` selects different

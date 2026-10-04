@@ -24,9 +24,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@9oob/client@workspace:client":
+"@9oob/client@workspace:packages/nextjs":
   version: 0.0.0-use.local
-  resolution: "@9oob/client@workspace:client"
+  resolution: "@9oob/client@workspace:packages/nextjs"
   dependencies:
     "@9oob/schema": "workspace:^"
     "@9oob/sdk": "workspace:^"
@@ -63,9 +63,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@9oob/contract@workspace:contract":
+"@9oob/contract@workspace:packages/foundry":
   version: 0.0.0-use.local
-  resolution: "@9oob/contract@workspace:contract"
+  resolution: "@9oob/contract@workspace:packages/foundry"
   dependencies:
     "@layerzerolabs/lz-evm-messagelib-v2": 3.0.148
     "@layerzerolabs/lz-evm-protocol-v2": 3.0.148

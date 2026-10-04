@@ -1,0 +1,19 @@
+{
+  "name": "9oob",
+  "description": "Reviewed natural-language intent execution on Hedera and Base",
+  "version": "0.1.0",
+  "networks": ["hedera-testnet", "base-sepolia"],
+  "workspaces": {
+    "schema": "packages/schema",
+    "sdk": "packages/sdk",
+    "server": "server",
+    "client": "client",
+    "contract": "contract"
+  },
+  "commands": {
+    "setup": "yarn setup",
+    "dev": "yarn dev",
+    "check": "yarn check",
+    "build": "yarn build"
+  }
+}

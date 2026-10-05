@@ -1,50 +1,16 @@
 # 9oob
 
 Embed natural language onchain actions in your Hedera app. Set up the scaffold
-and call `noob.run(intent)`. Users check balances,
-transfer, swap and bridge through one guided conversation.
+and call `noob.run(intent)` to check balances, transfer, swap and bridge through
+one guided modal.
 
 **Networks:** Hedera Testnet and Base Sepolia. **Swaps:** SaucerSwap.
 **Cross-chain messaging:** LayerZero V2.
 
-## Execution flow
-
-1. Your app submits an intent. The server interprets and validates it; missing
-   details are answered in the same chat.
-2. The modal requests a compatible wallet when the action needs an account.
-   Balance reads require no signature or network switch.
-3. For transactions, users review live details, approve and sign the required
-   steps. The SDK guides network changes, associations and allowances when needed.
-4. The server verifies transactions and destination settlement. Progress survives
-   refreshes and restarts without resending a submitted source transaction.
-
-## Supported routes
-
-| Action                   | Hedera Testnet               | Base Sepolia                        |
-| ------------------------ | ---------------------------- | ----------------------------------- |
-| Balance and transfer     | HBAR and fungible HTS tokens | ETH and configured test USDC        |
-| Same-chain swap          | SaucerSwap V1 testnet pools  | Requires a separate DEX integration |
-| Bridge                   | Test USDC → Base             | Test USDC → Hedera                  |
-| Combined swap and bridge | Hedera asset → Base USDC     | Base USDC → Hedera asset            |
-
-Swaps and bridges default to the connected wallet as recipient. Explicit recipients are
-preserved; transfers ask for one when missing. MetaMask supports all
-four actions across both networks. Native Hedera signing remains available for
-Hedera transfers.
-
-## Testnet evidence
-
-**2026-10-03:** 14 live API checks passed across balances, transfers, swaps, both
-bridge directions, combined routes and recovery.
-
-The Hedera → Base bridge has a verified [Hedera transaction](https://hashscan.io/testnet/transaction/0x0d065f06bd664a64d3aabff5b17ea476fb73e43bc18e95f4493e55b6cf2a4c17)
-and [Base payout](https://sepolia.basescan.org/tx/0x2a4644461c2e3ce2235a07cc8cbedd0939eb3c2ebe608dbce52be5aa02928101).
-See the [full receipts](packages/foundry/deployments/validation.testnet.json).
-
 ## Setup
 
-Requires Node.js **22.12+** and Yarn **3.2.3**. Install Foundry for contract builds
-and `yarn check`; Docker Desktop is needed only for the local MongoDB option.
+Requires Node.js **22.12+** and Yarn **3.2.3**. Install Foundry for contract checks;
+Docker is needed only for the bundled local MongoDB.
 
 ### 1. Create your app
 
@@ -53,18 +19,17 @@ npm create scaffold-hbar@latest -- --template chigozzdevv/9oob
 ```
 
 Enter your project name. The template selects Next.js, Foundry and Yarn.
-Enter the generated folder and run:
+Inside the generated folder, run:
 
 ```sh
 yarn setup
 ```
 
-Setup installs dependencies and copies missing environment files while preserving
-existing ones.
+This installs dependencies and creates missing environment files.
 
 ### 2. Configure
 
-In `server/.env`, set your OpenAI key and database:
+Set your OpenAI key and database in `server/.env`:
 
 ```dotenv
 OPENAI_API_KEY=YOUR_OPENAI_KEY
@@ -72,47 +37,39 @@ DB_MODE=mongodb
 DB_URI=mongodb://127.0.0.1:27017/9oob
 ```
 
-For Postgres, use `DB_MODE=postgres` and a full connection string such as
-`postgresql://username:password@localhost:5432/9oob`. Startup initializes the
-selected database's tables or indexes.
+For Postgres, set `DB_MODE=postgres` and `DB_URI` to its full connection string.
+The server initializes the selected database.
 
-In `packages/nextjs/.env.local`, set your Reown project ID:
+Set your Reown project ID in `packages/nextjs/.env.local`:
 
 ```dotenv
 NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=YOUR_PROJECT_ID
 ```
 
-The server example includes the shared testnet bridge addresses. OpenAI and database
-credentials stay on the server. If the client origin changes, update
-`NOOB_APP_ORIGIN`; `NOOB_SERVER_URL` selects the client's execution backend.
+Shared testnet bridge addresses are included in [server/.env.example](server/.env.example).
+`NOOB_SERVER_URL` selects the execution API; `NOOB_APP_ORIGIN` sets the frontend origin.
+Keep OpenAI and database credentials on the server.
 
-### 3. Start and try an intent
-
-With Docker Desktop running, start the bundled MongoDB and app:
+### 3. Run
 
 ```sh
 docker compose up -d --wait mongodb
 yarn next:dev
 ```
 
-Skip the Docker command when using a remote database or Postgres.
-Open the [landing page](http://localhost:3000) or [demo](http://localhost:3000/demo).
-The execution server runs at `http://127.0.0.1:3001`; the client proxies `/api/noob/*`
-to it. The demo displays available bridge liquidity and connects your wallet when
-needed.
+Skip the Docker command when using your own MongoDB or Postgres.
+Open the [demo](http://localhost:3000/demo). The app starts at port **3000** and the
+execution API at **3001**.
 
-Fund MetaMask with test HBAR on Hedera and test ETH on Base Sepolia for gas.
-Fund HBAR first to create its Hedera account. Get Hedera test USDC by swapping test
-HBAR through SaucerSwap; [Circle's faucet](https://faucet.circle.com/) supplies the
-configured Base test USDC. Start with small amounts such as **0.1 HBAR** for a swap
-or **0.1 USDC** for a bridge.
-
-`docker compose stop mongodb` stops the local database while retaining its data.
+Use MetaMask with test HBAR on Hedera and test ETH on Base Sepolia for gas.
+Swap HBAR for Hedera test USDC (`0.0.5449`); get Base test USDC from
+[Circle's faucet](https://faucet.circle.com/). Try **0.1 HBAR** for a swap or
+**0.1 USDC** for a bridge.
 
 ## SDK integration
 
-The scaffold includes wallet setup, the provider and modal styles. Call
-`noob.run()` from your app to open the modal with an intent:
+The scaffold includes wallet setup, the provider and modal styles. Call from a
+Next.js client component:
 
 ```ts
 import { noob } from "@9oob/sdk";
@@ -120,15 +77,12 @@ import { noob } from "@9oob/sdk";
 await noob.run("Check my HBAR balance");
 ```
 
-The SDK handles clarification, wallet connection, review, signing, progress and
-recovery. Styles load automatically. `noob.run()` resolves with the final persisted
-execution, including failure or cancellation. Call it from a client component in
-Next.js; [`intent-input.tsx`](packages/nextjs/components/intent-input.tsx) is the runnable example.
+This opens the modal for clarification, wallet connection, review, signing and
+progress. Pending executions resume after refresh; the call resolves with the
+final execution, including failure or cancellation. See the
+[runnable example](packages/nextjs/components/intent-input.tsx).
 
-<details>
-<summary>Integrate into an existing React app</summary>
-
-Mount the provider once inside your existing wallet setup:
+For an existing React app, mount the provider once inside your wallet setup:
 
 ```tsx
 import { NoobProvider } from "@9oob/sdk";
@@ -138,98 +92,57 @@ import { NoobProvider } from "@9oob/sdk";
 </NoobProvider>;
 ```
 
-`appWallet` implements [`NoobWallet`](packages/sdk/src/wallet/wallet.ts): identity,
-connection, signing and network switching. The scaffold's
-[`wallet-provider.tsx`](packages/nextjs/providers/wallet-provider.tsx) supplies this adapter.
-The endpoint defaults to `/api/noob`; pass `endpoint` only for a different API URL.
+`appWallet` implements [NoobWallet](packages/sdk/src/wallet/wallet.ts); the scaffold's
+[wallet adapter](packages/nextjs/providers/wallet-provider.tsx) is the reference.
+The API endpoint defaults to `/api/noob` and styles load automatically.
 
-</details>
+## Supported actions
 
-## Testnet bridge
+| Action               | Hedera Testnet               | Base Sepolia                 |
+| -------------------- | ---------------------------- | ---------------------------- |
+| Balance and transfer | HBAR and fungible HTS tokens | ETH and configured test USDC |
+| Swap                 | SaucerSwap V1 testnet pools  | Not configured               |
+| Bridge               | Test USDC → Base             | Test USDC → Hedera           |
+| Cross-chain swap     | Hedera asset → Base USDC     | Base USDC → Hedera asset     |
 
-The shared contracts collect source USDC and pay the destination's configured
-USDC from funded pools. They do not mint a new token. Destination liquidity is
-checked before signing.
+Swaps and bridges default to the connected wallet. Transfers require a recipient.
+Users review live details before signing; the server verifies settlement and
+recovers pending executions without repeating submitted transactions.
 
-| Network              | Bridge                                       | Test asset                                               |
-| -------------------- | -------------------------------------------- | -------------------------------------------------------- |
-| Hedera Testnet (296) | `0x827fab4b1f0059896f76a2db5e5a0f4cc4553b4a` | SaucerSwap USDC `0.0.5449`                               |
-| Base Sepolia (84532) | `0x27ce1d17ad320417f7aaf15f3e4d6dff5c13d642` | Circle USDC `0x036CbD53842c5426634e7929541eC2318f3dCF7e` |
+## Testnet evidence
 
-The [deployment manifest](packages/foundry/deployments/testnet.json) records deployment
-transactions and initial funding of **10 test USDC per pool**. These are distinct
-test assets; Circle's Hedera token `0.0.429274` is not used in this route. Current
-liquidity is shown in the demo.
+**2026-10-03:** 14 live API checks passed across balances, transfers, swaps,
+bridges, combined routes and recovery. See the [full receipts](packages/foundry/deployments/validation.testnet.json).
 
-<details>
-<summary>Custom deployments and live validation</summary>
+Hedera → Base bridge:
+[Hedera transaction](https://hashscan.io/testnet/transaction/0x0d065f06bd664a64d3aabff5b17ea476fb73e43bc18e95f4493e55b6cf2a4c17)
+→ [Base payout](https://sepolia.basescan.org/tx/0x2a4644461c2e3ce2235a07cc8cbedd0939eb3c2ebe608dbce52be5aa02928101).
 
-[`Bridge.s.sol`](packages/foundry/script/Bridge.s.sol) provides `deploy()`, `wire()` and
-`fund()` using [`packages/foundry/.env.example`](packages/foundry/.env.example). Configure reciprocal
-peers, LayerZero libraries, DVN and executor on both networks, then fund each
-receiving pool. Set your deployed addresses in `NOOB_HEDERA_BRIDGE_ADDRESS` and
-`NOOB_BASE_BRIDGE_ADDRESS` in `server/.env` and restart the server.
+The bridge collects source USDC and pays destination USDC from funded pools.
+The demo shows current liquidity; [deployment details](packages/foundry/deployments/testnet.json)
+record the configured contracts and distinct test assets.
 
-The local operator commands `yarn testnet:deploy --broadcast` and
-`yarn testnet:validate --broadcast <case>` use ignored `packages/foundry/.secrets/` wallets
-matching the [wallet manifest](packages/foundry/deployments/wallets.testnet.json). They sign
-and broadcast testnet transactions and run separately from automated tests.
-Available validation cases are in [`live-testnet.mts`](server/scripts/live-testnet.mts).
+## Project structure
 
-Keep the [operations journal](packages/foundry/deployments/operations.testnet.json) and
-private validation journal when resuming interrupted runs. If a destination pool
-cannot pay immediately, the bridge reserves the payout for a later claim without
-repeating the source bridge.
+| Path                   | Purpose                                                 |
+| ---------------------- | ------------------------------------------------------- |
+| `packages/nextjs/`     | Landing page, demo, wallet setup and API proxy          |
+| `packages/sdk/`        | `noob.run()`, modal and execution lifecycle             |
+| `packages/schema/`     | Validated intent and execution contracts                |
+| `server/src/features/` | Intent, planning, actions, execution and liquidity      |
+| `server/src/shared/`   | Database, configuration, authorization and integrations |
+| `packages/foundry/`    | Bridge contracts, tests, scripts and receipts           |
 
-</details>
-
-## Reference
-
-| Path                   | Responsibility                                                      |
-| ---------------------- | ------------------------------------------------------------------- |
-| `packages/nextjs/`     | Next.js landing page, demo, wallet setup and API proxy              |
-| `packages/sdk/`        | `noob.run()`, modal, browser lifecycle and wallet adapters          |
-| `packages/schema/`     | Validated intent, action, review and execution contracts            |
-| `server/src/features/` | Intent, planning, actions, execution and liquidity APIs             |
-| `server/src/shared/`   | Database, configuration, authorization and provider integrations    |
-| `packages/foundry/`    | USDC bridge, Foundry tests, deployment scripts and testnet evidence |
-
-MongoDB and Postgres preserve execution state, preparation context and submission
-history with atomic updates. Changing `DB_MODE` or `DB_URI` selects different
-storage; pending executions must be recovered from their original database.
-The worker verifies existing submissions without signing new source transactions.
+## Checks
 
 ```sh
 yarn check
 yarn next:build
 ```
 
-Checks cover validation, both database adapters, wallet guidance, recovery,
-provider transactions and bridge safety. Postgres tests use PGlite; MongoDB tests
-start a temporary MongoDB process and may download its binary on first use.
+Checks cover both database adapters, wallet flows, recovery and bridge safety.
 Automated tests never sign or broadcast real transactions.
 
-After building, run `yarn server:serve` and `yarn client:serve` in separate terminals.
+[Bridge deployment](packages/foundry/README.md) · [Deployment examples](deploy/README.md) · [Agent instructions](AGENTS.md)
 
-## Hosting
-
-Deploy the Next.js app on Vercel with **Root Directory** set to `packages/nextjs`
-and source files outside that directory included. The bundled Vercel configuration
-builds the shared workspaces first. Set `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`,
-`NOOB_SERVER_URL` and the server-only `NOOB_SERVER_API_KEY` in Vercel.
-
-Run the execution API on a persistent server. [`deploy/compose.yaml`](deploy/compose.yaml)
-includes the backend and authenticated MongoDB with a persistent volume. Copy
-[`deploy/.env.example`](deploy/.env.example) to `deploy/.env`, configure the keys,
-database passwords and public demo origin, then run:
-
-```sh
-docker compose -f deploy/compose.yaml up -d --build --wait
-```
-
-Route your HTTPS reverse proxy to `9oob-backend:3001` on the `9oob-edge` Docker network.
-Use the same `NOOB_SERVER_API_KEY` on Vercel and the backend; it is never exposed to
-the browser. The API starts its settlement worker automatically. Keep its database
-volume when updating containers so pending executions can resume.
-
-9oob uses the [MIT license](LICENSE).
+[MIT license](LICENSE).
